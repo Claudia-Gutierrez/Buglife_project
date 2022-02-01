@@ -4,7 +4,7 @@
 #                                              #
 ################################################
 
-
+#test
 # The function needs the following inputs:
 
     # Hab - raster of the habitat you wish to measure connectivity over
