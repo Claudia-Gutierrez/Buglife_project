@@ -1,0 +1,270 @@
+Species	ITD Mean_f (mm)	Comment
+Andrena alfkenella	1.47	
+Andrena ampla		Long confused with A. proxima
+Andrena angustior	1.8833	
+Andrena apicata	2.84	
+Andrena argentata	1.8583	
+Andrena barbilabris	2.32	
+Andrena bicolor	1.97	
+Andrena bimaculata	2.8	
+Andrena bucephala	2.17	
+Andrena chrysosceles	1.87	
+Andrena cineraria	2.86	
+Andrena clarkella	2.97	
+Andrena coitana	1.54	
+Andrena congruens	2.32	
+Andrena denticulata	2.125	
+Andrena dorsata	1.94	
+Andrena falsifica	1.41	
+Andrena ferox	2.4	
+Andrena flavipes	2.31	
+Andrena florea	2.44	
+Andrena floricola	1.5	
+Andrena fucata	2.24	
+Andrena fulva	2.68	
+Andrena fulvago	2.09	
+Andrena fuscipes	2.19	
+Andrena gravida	2.5	
+Andrena haemorrhoa	2.43	
+Andrena hattorfiana	2.71	
+Andrena helvola	2.27	
+Andrena humilis	2.25	
+Andrena labialis	2.7	
+Andrena labiata	1.78	
+Andrena lapponica	2.54	
+Andrena lathyri	2.64	Possibly extinct in UK
+Andrena lepida	2.1	
+Andrena marginata	1.96	
+Andrena minutula	1.39	
+Andrena minutuloides	1.22	
+Andrena nana	1.56	Possibly extinct in UK
+Andrena nanula	1.21	Possibly extinct in UK
+Andrena nigriceps	2.54	
+Andrena nigroaenea	2.83	
+Andrena nigrospina	3.2	
+Andrena nitida	2.88	
+Andrena nitidiuscula	1.575	
+Andrena niveata	1.508	Status unclear
+Andrena ovatula	2.23	
+Andrena pilipes	3.21	
+Andrena polita	2.3	Recently rediscovered in GB
+Andrena praecox	2.36	
+Andrena proxima	1.81	Present but also confused with A. ampla
+Andrena rosae	2.63	
+Andrena ruficrus	1.958	
+Andrena scotica	2.86	
+Andrena semilaevis	1.44	
+Andrena similis	2.39	
+Andrena simillima	2.28	
+Andrena subopaca	1.38	
+Andrena synadelpha	2.266	
+Andrena tarsata	1.63	
+Andrena thoracica	3.23	
+Andrena tibialis	2.93	
+Andrena tridentata		Extinct
+Andrena trimmerana	2.66	
+Andrena vaga	2.67	Recently re-colonised
+Andrena varians	2.541	
+Andrena wilkella	2.33	
+Anthidium manicatum	3.6	
+Anthophora bimaculata	3.25	
+Anthophora furcata	3.17	
+Anthophora plumipes	4.13	
+Anthophora quadrimaculata	3.08	
+Anthophora retusa	3.732	
+Apis mellifera	3.3	Honeybee
+Bombus barbutellus	5.21	
+Bombus bohemicus	4.64	
+Bombus campestris	4.48	
+Bombus cryptarum	5.1	
+Bombus cullumanus	4.95	Extinct
+Bombus distinguendus	5.52	
+Bombus hortorum	5.67	
+Bombus humilis	4.54	
+Bombus hypnorum	5.78	Recent colonist
+Bombus jonellus	5.08	
+Bombus lapidarius	5.99	
+Bombus lucorum	4.88	
+Bombus magnus		
+Bombus monticola	5.1	
+Bombus muscorum	5.09	
+Bombus pascuorum	4.89	
+Bombus pomorum	4.82	Extinct
+Bombus pratorum	5.09	
+Bombus ruderarius	4.77	
+Bombus ruderatus	5.86	
+Bombus rupestris	5.62	
+Bombus soroeensis	4.85	
+Bombus subterraneus	5.59	Extinct
+Bombus sylvarum	4.45	
+Bombus sylvestris	4.33	
+Bombus terrestris	5.91	
+Bombus vestalis	5.21	
+Ceratina cyanea	1.36	
+Chelostoma campanularum	0.927	
+Chelostoma florisomne	1.63	
+Coelioxys afer	2.07	
+Coelioxys conoideus	3.16	
+Coelioxys elongatus	2.96	
+Coelioxys inermis	2.73	
+Coelioxys mandibularis	2.45	
+Coelioxys quadridentatus	2.73	
+Coelioxys rufescens	2.88	
+Colletes cunicularius	3.38	
+Colletes daviesanus	2.52	
+Colletes floralis	2.633	
+Colletes fodiens	2.46	
+Colletes halophilus	3.263	
+Colletes hederae	3.2	Recent colonist
+Colletes marginatus	2.17	
+Colletes similis	2.41	
+Colletes succinctus	2.99	
+Dasypoda hirtipes	2.73	
+Dufourea halictula		Extinct
+Dufourea minuta	1.1	Extinct
+Epeolus cruciger	1.86	
+Epeolus variegatus	1.87	
+Eucera longicornis	3.47	
+Eucera nigrescens	3.52	Extinct
+Halictus confusus	1.54	
+Halictus eurygnathus	2.08	Recently rediscovered in GB
+Halictus maculatus	1.49	Extinct
+Halictus rubicundus	2.1	
+Halictus tumulorum	1.45	
+Heriades rubicola	1.28	
+Heriades truncorum	1.43	
+Hoplitis adunca	2.54	New colonist
+Hoplitis claviventris	1.95	
+Hoplitis leucomelana	1.44	
+Hylaeus annularis	1.41	
+Hylaeus brevicornis	0.98	
+Hylaeus communis	1.3	
+Hylaeus confusus	1.4	
+Hylaeus cornutus	1.32	
+Hylaeus dilatatus	1.39	
+Hylaeus hyalinatus	1.31	
+Hylaeus incongruus	1.431	
+Hylaeus pectoralis	1.348	
+Hylaeus pictipes	1.05	
+Hylaeus punctulatissimus	1.47	
+Hylaeus signatus	1.808	
+Lasioglossum albipes	1.59	
+Lasioglossum angusticeps	1.391	
+Lasioglossum brevicorne	1.37	
+Lasioglossum calceatum	1.74	
+Lasioglossum cupromicans	1.21	
+Lasioglossum fratellum	1.45	
+Lasioglossum fulvicorne	1.34	
+Lasioglossum laeve	1.566	
+Lasioglossum laevigatum	1.91	
+Lasioglossum laticeps	1.47	
+Lasioglossum lativentre	1.51	
+Lasioglossum leucopus	1.11	
+Lasioglossum leucozonium	1.8	
+Lasioglossum malachurum	1.6	
+Lasioglossum minutissimum	0.88	
+Lasioglossum morio	1.05	
+Lasioglossum nitidiusculum	1.29	
+Lasioglossum parvulum	1.29	
+Lasioglossum pauperatum	1.21	
+Lasioglossum pauxillum	1.17	
+Lasioglossum prasinum	1.77	
+Lasioglossum punctatissimum	1.29	
+Lasioglossum puncticolle	1.58	
+Lasioglossum quadrinotatum	1.63	
+Lasioglossum rufitarse	1.37	
+Lasioglossum semilucens	0.94	
+Lasioglossum sexnotatum	2.07	
+Lasioglossum sexstrigatum	1.31	Recent colonist
+Lasioglossum smeathmanellum	1.26	
+Lasioglossum villosulum	1.37	
+Lasioglossum xanthopus	2.31	
+Lasioglossum zonulum	1.98	
+Macropis europaea	2.31	
+Megachile centuncularis	2.7	
+Megachile circumcincta	3.58	
+Megachile ericetorum	3.27	Extinct
+Megachile lapponica	2.8	Extinct
+Megachile leachella	2.71	
+Megachile ligniseca	3.52	
+Megachile maritima	3.72	
+Megachile versicolor	3.16	
+Megachile willughbiella	3.38	
+Melecta albifrons	3.23	
+Melecta luctuosa	3.37	Extinct
+Melitta dimidiata	3.48	
+Melitta haemorrhoidalis	2.52	
+Melitta leporina	2.24	
+Melitta tricincta	2.71	
+Nomada alboguttata	1.7	Recently recognised as in GB
+Nomada argentata	1.63	
+Nomada armata	1.9	
+Nomada baccata	1.39	
+Nomada bifasciata	1.93	Recent colonist
+Nomada conjungens	1.32	
+Nomada errans		Probably extinct
+Nomada fabriciana	1.49	
+Nomada facilis	1.541	Recently recognised as in GB
+Nomada ferruginata	1.44	
+Nomada flava	1.86	
+Nomada flavoguttata	1.09	
+Nomada flavopicta	1.573	
+Nomada fucata	1.86	
+Nomada fulvicornis	2.03	
+Nomada goodeniana	2.02	
+Nomada guttulata	1.212	
+Nomada hirtipes	1.59	
+Nomada integra	1.54	
+Nomada lathburiana 	2.01	
+Nomada leucophthalma	1.76	
+Nomada marshamella	2.23	
+Nomada obtusifrons	1.27	
+Nomada panzeri	1.58	
+Nomada roberjeotiana	1.52	
+Nomada ruficornis	1.78	
+Nomada rufipes	1.87	
+Nomada sexfasciata	2.29	
+Nomada sheppardana	0.93	
+Nomada signata	1.91	
+Nomada striata	1.65	
+Nomada subcornuta		Recently re-recognised
+Nomada zonata	1.65	Recent colonist
+Osmia aurulenta	2.83	
+Osmia bicolor	2.72	
+Osmia bicornis	2.98	
+Osmia caerulescens	2.25	
+Osmia cornuta	3.3	Recent colonist
+Osmia inermis	2.7	
+Osmia leaiana	2.69	
+Osmia niveata	2.51	
+Osmia parietina	2.27	
+Osmia pilicornis	2.68	
+Osmia spinulosa	2.01	
+Osmia uncinata	2.27	
+Osmia xanthomelana	3.36	
+Panurgus banksianus	2.4	
+Panurgus calcaratus	1.77	
+Rophites quinquespinosus		Extinct
+Sphecodes albilabris	2.12	
+Sphecodes crassus	1.23	
+Sphecodes ephippius	1.5	
+Sphecodes ferruginatus	1.39	
+Sphecodes geoffrellus	1.07	
+Sphecodes gibbus	1.64	
+Sphecodes hyalinatus	1.451	
+Sphecodes longulus	0.948	
+Sphecodes miniatus	0.97	
+Sphecodes monilicornis	1.48	
+Sphecodes niger	1.04	
+Sphecodes pellucidus	1.61	
+Sphecodes puncticeps	1.16	
+Sphecodes reticulatus	1.4	
+Sphecodes rubicundus	1.8	
+Sphecodes scabricollis	1.54	
+Sphecodes spinulosus	1.827	
+Stelis breviuscula	1.31	
+Stelis odontopyga		Recent colonist
+Stelis ornatula	1.52	
+Stelis phaeoptera	2.03	
+Stelis punctulatissima	2.592	
+Xylocopa violacea	6.62	Colonising
