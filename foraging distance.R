@@ -6,16 +6,12 @@ library(pollimetry)
 
 #Import Intertegular distance (ITD) data [mm]
 ITDdata<-read.delim(file.path("data","ITD.txt"),na.strings = c("NA",""),stringsAsFactors=T)
-save(ITD,file=file.path("data","ITDdata.Rdata"))
 
-foragedist(x, type = "GreenleafAll")
+#Calculate GrMhd ("Maximum homing distance"), GrThd ("Typical homing distance"), GrMfd ("Maximum feeder training distance"), GrMcd("Maximum communication distance")
+forage_dist<-as.data.frame(foragedist(ITDdata$ITD.Mean_f_mm, type = "GreenleafAll"))
 
-
-
-
-
-
-
+#join table with species name and ITD
+foragedistall<-cbind(ITDdata, forage_dist)
 
 
 ####REFERENCES####

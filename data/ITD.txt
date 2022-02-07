@@ -1,4 +1,4 @@
-Species	ITD Mean_f (mm)	Comment
+Species	ITD Mean_f_mm	Comment
 Andrena alfkenella	1.47	
 Andrena ampla		Long confused with A. proxima
 Andrena angustior	1.8833	
