@@ -13,6 +13,10 @@ forage_dist<-as.data.frame(foragedist(ITDdata$ITD.Mean_f_mm, type = "GreenleafAl
 #join table with species name and ITD
 foragedistall<-cbind(ITDdata, forage_dist)
 
+#save table
+write.csv(foragedistall,"data/GrDistances.csv", row.names = FALSE)
+
+
 
 ####REFERENCES####
 ##Data: Roberts & Potts 'The Database on Functional Traits 
