@@ -1,7 +1,6 @@
 ############ FORAGING DISTANCE FOR UK BEES ##############
 ## CLAUDIA GUTIERREZ, 2022 ###
 
-
 library(pollimetry)
 
 #Import Intertegular distance (ITD) data [mm]
@@ -16,6 +15,13 @@ foragedistall<-cbind(ITDdata, forage_dist)
 #save table
 write.csv(foragedistall,"data/GrDistances.csv", row.names = FALSE)
 
+hist(forage_dist$GrThd,main='Typical homing distance', xlab = 'foraging distance (Km)', breaks=50, ylim=c(0,130))
+
+hist(forage_dist$GrMhd ,main='Maximum homing distance', xlab = 'foraging distance (Km)', breaks=50, ylim=c(0,140))
+
+summary(forage_dist$GrThd)
+
+summary(forage_dist$GrMhd)
 
 
 ####REFERENCES####
