@@ -4,7 +4,6 @@
 #                                              #
 ################################################
 
-#test
 # The function needs the following inputs:
 
     # Hab - raster of the habitat you wish to measure connectivity over
@@ -28,7 +27,7 @@ Condatis <- function(hab, st, R, powerthresh, disp){
     y
   }
   
-  # Oporator that  is the oposite of %in%
+  # Operator that  is the opposite of %in%
   `%!in%` = Negate(`%in%`)
   
   # Check if the habitat is in meters, and if it is make sure the cellside etc is divided by 1000
