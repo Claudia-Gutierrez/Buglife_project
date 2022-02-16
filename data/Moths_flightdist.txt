@@ -1,0 +1,32 @@
+Species	forewing_minimum	forewing_maximum	estimated_dry_mass	AvgFlightDistance	<1_gen/yr	1_gen/yr	?2_gen/yr	Dist_Reference
+Agrotis exclamationis	15	19	42.7	721.7648091			1	Jones
+Agrotis puta	12	16	30.4	41.67085139			1	Jones
+Amphipoea oculea	12	15	28.5	148.1874387		1		Jones
+Amphipyra pyramidea	21	26	75.5	5215.524499		1		Jones
+Apamea anceps	16	21	49.6	237.0755167		1		Jones
+Apamea monoglypha	19	26	70	570.5695792		1		Jones
+Apamea sordens	16	19	45	466.7591409		1		Jones
+Axylia putris	14	16	34.3	437.1312872		1		Jones
+Charanyca trigrammica	15	17	38.4	359.4814236		1		Jones
+Cosmia trapezina	13	16	32.3	358.3456937		1		Jones
+Hoplodrina ambigua	13	15	30.4	136.4013282			1	Jones
+Hoplodrina octogenaria	14	16	34.3	213.5451903		1		Jones
+Hydraecia micacea	14	21	45	614.5805121		1		Jones
+Lacanobia oleracea	14	19	40.6	433.2200448		1		Jones
+Mesapamea didyma	11	16	28.5	283.2622415		1		Jones
+Mesapamea secalis	12	16	30.4	386.4309785		1		Jones
+Mythimna impura	14	18	38.4	54.29643279		1		Jones
+Mythimna pallens	14	17	36.3	169.7991175		1	1	Jones
+Noctua comes	16	21	49.6	1731.735017		1		Jones
+Noctua janthe	16	20	47.3	638.9839569		1		Jones
+Noctua pronuba	21	26	75.5	4065.687011		1		Jones
+Ochropleura plecta	12	15	28.5	54.99112677		1	1	Jones
+Oligia fasciuncula	10	12	19.9	267.4735294		1		Jones
+Oligia latruncula	11	13	23.2	93.35882353		1		Jones
+Oligia strigilis	11	13	23.2	235.1459921		1		Jones
+Omphaloscelis lunosa	14	17	36.3	231.4382203		1		Jones
+Phlogophora meticulosa	21	25	72.7	754.6473804			1	Jones
+Thalpophila matura	17	20	49.6	5312.048333		1		Jones
+Xestia c-nigrum	14	19	40.6	826.2210696			1	Jones
+Xestia triangulum	17	19	47.3	362.3651015		1		Jones
+Xestia xanthographa	14	17	36.3	551.8763127		1		Jones

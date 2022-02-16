@@ -23,6 +23,7 @@ summary(forage_dist$GrThd)
 
 summary(forage_dist$GrMhd)
 
+write.csv(pollimetry_dataset,"data/pollimatry_dataset.csv", row.names = FALSE)
 
 ####REFERENCES####
 ##Data: Roberts & Potts 'The Database on Functional Traits 
