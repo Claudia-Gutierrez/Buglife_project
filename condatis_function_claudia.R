@@ -170,3 +170,6 @@ Condatis <- function(hab, st, R, powerthresh, disp){
   names(results) <- c('flow', 'flow_raster', 'flow_shp', 'progress_raster', 'power', 'bottlenecks')
   return(results)
 }
+
+
+

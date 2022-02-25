@@ -28,3 +28,4 @@ fit1 <- lm(log(data$AvgFlightDistance) ~ log(data$estimated_dry_mass))
 ggplotRegression(fit1)
 
 
+
