@@ -61,6 +61,8 @@ hoverflyout<-boxplot(hoverfly$logdist, plot=FALSE)$out
 hoverfly<- hoverfly[-which(hoverfly$logdist %in% hoverflyout),]
 mothsout<-boxplot(hoverfly$logdist)
 
+bees<-subset(data_1, data_1$Group=="Bees")
+
 allpoll<- rbind(moths, bees, hoverfly)
 boxplot(logdist~Group, allpoll)
 
