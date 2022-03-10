@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="en"><Esri><CreaDate>20220301</CreaDate><CreaTime>14465500</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.3\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\Reclassify" Date="20220301" Time="144655">Reclassify test.tif Value "100 1" C:\Users\gutie\OneDrive\Documents\R\Buglife_project\data\raster\test1.tif DATA</Process></lineage></DataProperties></Esri></metadata>

@@ -4,13 +4,14 @@
 #                                              #
 ################################################
 
+
 # The function needs the following inputs:
 
-    # Hab - raster of the habitat you wish to measure connectivity over
-    # st - raster of location of sources and targets
-    # R - R value of the species moving (number of movers produced per km^2 of habitat)
-    # powerthresh - value between 0 and 1, used to define what a bottleneck is ( selects bottlenecks that account for x proportion of the total power in the network)
-    # disp - Dispersal value of the species in km 
+# Hab - raster of the habitat you wish to measure connectivity over
+# st - raster of location of sources and targets
+# R - R value of the species moving (number of movers produced per km^2 of habitat)
+# powerthresh - value between 0 and 1, used to define what a bottleneck is ( selects bottlenecks that account for x proportion of the total power in the network)
+# disp - Dispersal value of the species in km 
 
 Condatis <- function(hab, st, R, powerthresh, disp){
   
@@ -27,7 +28,7 @@ Condatis <- function(hab, st, R, powerthresh, disp){
     y
   }
   
-  # Operator that  is the opposite of %in%
+  # Oporator that  is the oposite of %in%
   `%!in%` = Negate(`%in%`)
   
   # Check if the habitat is in meters, and if it is make sure the cellside etc is divided by 1000
@@ -51,6 +52,12 @@ Condatis <- function(hab, st, R, powerthresh, disp){
   apt$x <- apt$xm/scaler # Create new columns for coordinates in km #
   apt$y <- apt$ym/scaler
   cellside <- xres(amap)/scaler
+  
+  #convert st raster to dataframe#
+  st <- as.data.frame(rasterToPoints(st,fun = function(x){!is.na(x)}, spatial = F))
+  names(st) <- c('xm', 'ym', 'label')
+  st$x <- st$xm/scaler
+  st$y <- st$xm/scaler
   
   #Get the distances between each cell of habitat and every other cell
   len<-dim(apt)[1]
@@ -170,6 +177,3 @@ Condatis <- function(hab, st, R, powerthresh, disp){
   names(results) <- c('flow', 'flow_raster', 'flow_shp', 'progress_raster', 'power', 'bottlenecks')
   return(results)
 }
-
-
-
