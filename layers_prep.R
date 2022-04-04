@@ -68,7 +68,7 @@ st[]<-NA
 
 #movement SOUTH to NORTH
 st@nrows
-st1<- as.matrix(sandt)
+st1<- as.matrix(st)
 st1[1:2,]<-2
 st1[399:400, ]<-1 # st@nrows-1:st@nrows   
  
