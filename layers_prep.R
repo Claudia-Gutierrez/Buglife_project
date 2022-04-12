@@ -1,26 +1,53 @@
 library (rgdal)
 library(raster)
 library(terra)
+library(phyloregion)
+library(ggplot2)
 
 #######LANDSCAPE CUMBRIA NATURAL RECOVERY HABITATS#############
 
+########
+#Spatial data needed:
+#Region of interest: B-Lines shapefile
+#Habitat: Cumbria habitat shapefile
+#B-line projects: Get Cumbria Buzzing project shapefile
+
+########
+
 #Read original habitat shapefile
 Cumbriahab <- readOGR("spatialdata", "CumbriaHab")
-
+# Place Habitats IDs
 hab<- unique(Cumbriahab$LNRNHab)
 habdf<- data.frame(ID = 1:length(hab), hab = hab)
-# Place Habitats IDs
 Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]
 
+#Read B-Lines shapefile 
+BLines<-readOGR("spatialdata", "BLinesCumbria")
+
+
+#Create a grid to select a smaller landscape e.g. 2k
+grid<- fishnet(Cumbriahab, res = 2000, type = "square")
+
+#Select grid polygons where B-lines are distributed
+Blgrid<-grid[BLines,]
+#add ID grid
+Blgrid$ID<-Blgrid@plotOrder
+
+ggplot() + geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
+  geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)
+
+
+
 #Clip Area Of Interest
-aoi <- readOGR("spatialdata", "AOI")
+aoi <- grid[grid$Id=='430',]
+plot(aoi)
 
 CumbriahabAOI<- Cumbriahab[aoi, ]
 
-## Set up a raster "template" for a 30 m grid
+## Set up a raster "template" for a 10 m grid
 aoi@bbox #extent of AOI
-ext <- extent(296942.2,311705.3,519762.5,531771.3) #aoi@bbox
-gridsize <- 30
+ext <- extent(299941.2,301941.2,523082.8,525082.8) #aoi@bbox
+gridsize <- 10
 r <- raster(ext, res=gridsize)
 
 ## Rasterize the shapefile
@@ -70,7 +97,7 @@ st[]<-NA
 st@nrows
 st1<- as.matrix(st)
 st1[1:2,]<-2
-st1[399:400, ]<-1 # st@nrows-1:st@nrows   
+st1[199:200, ]<-1 # st@nrows-1:st@nrows   
  
 # #movement NORTH TO SOUTH
 # st1<- as.matrix(sandt)
@@ -88,7 +115,7 @@ st1[399:400, ]<-1 # st@nrows-1:st@nrows
 
 st[]<-st1
 
-plot(st)
+plot(st,col=grey(1:10/10))
 
 crs (st)<-"EPSG:27700"
 writeRaster(st,"spatialdata/st.tif", overwrite=TRUE)
