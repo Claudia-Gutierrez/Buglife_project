@@ -1,20 +1,28 @@
+#############PREPARATION OF LAYERS FOR CONDATIS#############
+#CLAUDIA GUTIERREZ, APRIL 2022
+
+#### DESCRIPTION
+#This code is designed to obtain the two layers required by Condatis — 'habitat' and 'source & tagets'— in the desired format (*.tif). 
+#The user can choose the Area of Interest (AOI) and resolution of the layers
+#Processing is limited to a maximum 60,000 (six thousand) cells in the study area. A section of the code allows to validate the condition of <60000 cells to either proceed with the analysis or reset the extent and resolution of the AOI. 
+
+#### DATA REQUIRED
+#1. Habitat shapefile: e.g. Cumbria Local Nature Recovery Habitats Basemap
+#2. B-Line shapefile
+#3. B-Line projects shapefile: e.g. 'Get Cumbria Buzzing projects' map
+
+######################################################################
+
 library (rgdal)
 library(raster)
 library(terra)
 library(phyloregion)
 library(ggplot2)
+library(rgeos)
+library(dplyr)
 
-#######LANDSCAPE CUMBRIA NATURAL RECOVERY HABITATS#############
 
-########
-#Spatial data needed:
-#Region of interest: B-Lines shapefile
-#Habitat: Cumbria habitat shapefile
-#B-line projects: Get Cumbria Buzzing project shapefile
-
-########
-
-#Read original habitat shapefile
+#Read habitat shapefile
 Cumbriahab <- readOGR("spatialdata", "CumbriaHab")
 # Place Habitats IDs
 hab<- unique(Cumbriahab$LNRNHab)
@@ -24,21 +32,52 @@ Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]
 #Read B-Lines shapefile 
 BLines<-readOGR("spatialdata", "BLinesCumbria")
 
-
-#Create a grid to select a smaller landscape e.g. 2k
+#Create a grid to select a smaller landscape, e.g. 2k (2000m)
 grid<- fishnet(Cumbriahab, res = 2000, type = "square")
 
 #Select grid polygons where B-lines are distributed
 Blgrid<-grid[BLines,]
-#add ID grid
-Blgrid$ID<-Blgrid@plotOrder
 
-ggplot() + geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
+#add ID grid
+Blgrid$ID<-as.character(Blgrid@plotOrder)
+
+#calculate coordinates to label grid
+Blgrid@data <- cbind(Blgrid@data, gCentroid(Blgrid,byid = T) %>% coordinates())
+
+#visualize potential AOI 
+ggplot() + 
+  geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
+  geom_text(data = Blgrid@data, aes(x = x, y = y),label = Blgrid$ID, size=1)+  
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)
 
+#Read original GCB projects shapefile
+GCB <- readOGR("spatialdata", "gcb")
+
+#Select grid polygons where GCB projects are distributed
+
+GCBgrid<- Blgrid[GCB,]
+ggplot() + 
+  geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
+  geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 
 
-#Clip Area Of Interest
+#save pdf with potential areas of interest
+pdf("spatialdata/AOI.pdf")
+
+CGBgridmap<- ggplot()+ 
+  geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)+
+  geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "grey", fill = NA)+
+  geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)
+  
+CGBgridmap
+dev.off()
+
+CGBgridmap
+
+
+#Clip Area Of Interest, select one or more grid cells based on ID
 aoi <- grid[grid$Id=='430',]
 plot(aoi)
 
@@ -67,9 +106,6 @@ writeRaster(hab_qual,"spatialdata/habitat.tif", overwrite=TRUE)
 plot(hab_qual)
 
 #######LANDSCAPE INCLUDING 'GET CUMBRIA BUZZING (GCB)' PROJECTS#############
-
-#Read original GCB projects shapefile
-GCB <- readOGR("spatialdata", "gcb")
 
 GCB$qual<- 1 #add a column with the habitat quality value
 
