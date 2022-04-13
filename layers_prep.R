@@ -83,7 +83,7 @@ dev.off()
 GCBgridmap
 
 #Clip Area Of Interest, select one or more adjacent grid cells based on ID
-aoi<- Blgrid[Blgrid$ID=='400',]
+aoi<- Blgrid[Blgrid$ID=='400',] # [Blgrid$ID=='x'|Blgrid$ID=='y',]
 crs (aoi)<-"EPSG:27700"
 CumbriahabAOI<- Cumbriahab[aoi, ]
 plot(CumbriahabAOI)
@@ -97,9 +97,9 @@ gridsize <- 10
 r <- raster(ext, res=gridsize)
 
 #Evaluate pixel count of AOI, if there are >60000 pixels in the AOI the script will stop
-{habcount<- rasterize (CumbriahabAOI, r,1) 
-  habcount<-cellStats(habcount, 'sum')
-  
+habcount<- rasterize (CumbriahabAOI, r,1) 
+habcount<-cellStats(habcount, 'sum')
+{
   if (habcount>60000)
     stop("too many cells")
   
@@ -132,7 +132,7 @@ plot(GCBr)
 hab_bl<- raster:::.ifel(GCBr > 0, 1,hab_qual)#if GCBr==1 then change value in hab_qual to 1
 plot(hab_bl)
 
-hab_blcount<- raster:::.ifel(hab_bl > 0, 1,hab_bl)
+hab_blcount<-raster:::.ifel(hab_bl> 0, 1,hab_bl)
 plot(hab_blcount)
 
 {hab_blcount<-cellStats(hab_bl, 'sum')
