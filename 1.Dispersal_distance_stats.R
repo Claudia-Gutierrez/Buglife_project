@@ -1,6 +1,17 @@
 ############ STATS ESTIMATED DISTANCES FOR UK POLLINATORS ##############
-## CLAUDIA GUTIERREZ, 2022 ###
+## CLAUDIA GUTIERREZ, MARCH 2022 ###
 
+
+#This code calculates the range of pollinators' dispersal distances required by Condatis. The distances are calculated for three groups: bees, hoverflies and moths. 
+#The distances were calculated using linear regression models using morphological characters of the species. See Methods for details.
+#An ANOVA and (post hoc) Dunnett Test is performed to assess if there is a significant diffrence among the dispersal distances of the groups  
+
+library(car)
+library(DescTools)
+
+# Explore data ------------------------------------------------------------
+
+#Read text file with species names and respective estimated dispersal distance
 data<-as.data.frame(read.delim(file.path("data","all_spp_dist.txt"),na.strings = c("NA",""),stringsAsFactors=T))
 
 summary(data$dist)
@@ -8,40 +19,10 @@ summary(data$dist)
 #0.0004   0.0463   0.2119   1.9512   0.4523 741.1294 
 
 hist(data$dist,breaks = 100, xlab="distance[km]", ylab="Frequency", main=NULL)
-hist(data$dist,breaks = 100 )
+
 boxplot(dist~Group, data)
 
-
-logdist<-log(data$dist)
-summary(logdist)
-#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#-7.7464 -3.0729 -1.5518 -1.9889 -0.7933  6.6082 
-
-hist(logdist,breaks = 100, xlab="logdistance[km]", ylab="Frequency", main=NULL )
-
-
-hist(logdist,breaks = 100 )
-quantile(logdist, c(.05,.95))
-#     5%        95% 
-#  -6.1791303  0.9601137 
-
-exp(-6.1791303)
-#0.002072229
-exp(0.9601137)
-#2.611993
-
-data_90<-subset(logdist, logdist>-6.1791303  & data$dist<0.9601137)
-hist(data_90, breaks = 50, xlab=" log distance[km]", ylab="Frequency")
-hist(exp(data_90),breaks = 10, xlab="distance[km]", ylab="Frequency", main=NULL)
-data_90<-subset(logdist, logdist>-6.1791303  & logdist<0.9601137)
-hist(data_90, breaks = 50)
-hist(exp(data_90),breaks = 10)
-
-
-######Difference in dispersal distance among groups 
-library(car)
-library(DescTools)
-
+#Log-transformed data
 data_1<-data
 data_1$logdist<-logdist
 hist(data_1$logdist)
@@ -55,20 +36,20 @@ mothsout<-boxplot(moths$logdist, plot=FALSE)$out
 moths<- moths[-which(moths$logdist %in% mothsout),]
 mothsout<-boxplot(moths$logdist)
 
-
 hoverfly<-subset(data_1, data_1$Group=="Hoverfly")
 hoverflyout<-boxplot(hoverfly$logdist, plot=FALSE)$out
 hoverfly<- hoverfly[-which(hoverfly$logdist %in% hoverflyout),]
 hoverflyout<-boxplot(hoverfly$logdist)
 
 bees<-subset(data_1, data_1$Group=="Bees")
-summary(bees)
 
 allpoll<- rbind(moths, bees, hoverfly)
 boxplot(logdist~Group, allpoll)
 
 
-# Levene's Test for Homogeneity of Variance (center = median)
+# Tests difference among groups -------------------------------------------
+
+# Levene's Test for Homogeneity of Variance to choose post hoc test
 leveneTest(logdist~Group, allpoll)
 
 # Levene's Test for Homogeneity of Variance (center = median)
@@ -79,7 +60,6 @@ leveneTest(logdist~Group, allpoll)
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #The variances are unequal
 
-
 #ANOVA
 model <- aov(logdist ~ Group, data = allpoll)
 summary(model)
@@ -88,15 +68,15 @@ summary(model)
 #   Residuals   1228   4700    3.83                   
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#each group does not have the same average values
+
+#There is a significant difference among groups
 
 
-# Dunnett's test for comparing several treatments with a control :  
-#     95% family-wise confidence level
+#Dunnett's test for comparing between groups with a control (95% confidence level)
 
 DunnettTest(allpoll$logdist, g=allpoll$Group)
-# # $Bees
-# #                     diff     lwr.ci     upr.ci    pval    
+# $Bees
+#                  diff     lwr.ci     upr.ci    pval    
 # Hoverfly-Bees -0.1324511 -0.5231872  0.2582849  0.6608    
 # Moths-Bees    -1.1367991 -1.4470014 -0.8265968 2.7e-15 ***
 # # Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -110,4 +90,16 @@ DunnettTest(allpoll$logdist, control="Moths", g=allpoll$Group)
 #   ---
 #   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+#There is a significant difference between moths and bees but not between bees and hoverflies
+
+# Dispersal distance values -----------------------------------------------
+
+#Use the following intervals
+summary(bees$dist)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.01503  0.08470  0.24826  0.82198  0.66327 10.42849 
+
+summary (moths$dist)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.00043  0.01367  0.14425  1.12600  0.47880 81.11324 
 

@@ -3,7 +3,8 @@
 #                Condatis Function             #
 #                                              #
 ################################################
-
+##Author(s): Jenny Hodgson, Thomas Travers
+##Shared by Thomas Travers (March 2022) 
 
 # The function needs the following inputs:
 

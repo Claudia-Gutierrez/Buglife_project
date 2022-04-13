@@ -1,12 +1,11 @@
 #############PREPARATION OF LAYERS FOR CONDATIS#############
 #CLAUDIA GUTIERREZ, APRIL 2022
 
-#### DESCRIPTION
 #This code is designed to obtain the two layers required by Condatis — 'habitat' and 'source & tagets'— in the desired format (*.tif). 
 #The user can choose the Area of Interest (AOI) and resolution of the layers
 #Processing is limited to a maximum 60,000 (six thousand) cells in the study area. A section of the code allows to validate the condition of <60000 cells to either proceed with the analysis or reset the extent and resolution of the AOI. 
 
-#### DATA REQUIRED
+# DATA REQUIRED
 #1. Habitat shapefile: e.g. Cumbria Local Nature Recovery Habitats Basemap
 #2. B-Line shapefile
 #3. B-Line projects shapefile: e.g. 'Get Cumbria Buzzing projects' map
