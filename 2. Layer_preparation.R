@@ -172,6 +172,7 @@ st1[st@nrows, ]<-1
 st[]<-st1
 
 plot(st,col=c("green", "red"))
+st
 
 crs (st)<-"EPSG:27700"
 writeRaster(st,"spatialdata/st.tif", overwrite=TRUE)

@@ -24,7 +24,7 @@ boxplot(dist~Group, data)
 
 #Log-transformed data
 data_1<-data
-data_1$logdist<-logdist
+data_1$logdist<-log(data$dist)
 hist(data_1$logdist)
 
 boxplot(logdist~Group, data_1)
