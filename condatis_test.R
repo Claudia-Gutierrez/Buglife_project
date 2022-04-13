@@ -7,10 +7,10 @@ library(RColorBrewer)
 
 memory.limit(size=20000)
 hab<- raster("spatialdata/habitat.tif")
-hab2<-raster("spatialdata/delete.tif")
+habbl<-raster("spatialdata/habitatBL.tif")
 st<- raster("spatialdata/st.tif")
 
-test<-Condatis(hab=hab, st=st, R=100, powerthresh=0.25, disp=1)
+test<-Condatis(hab=hab, st=st, R=100, powerthresh=0.25, disp=0.1)
 test$flow
 plot(test$flow_raster, col=grey(1:100/100))
 
