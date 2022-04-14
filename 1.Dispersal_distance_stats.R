@@ -1,6 +1,11 @@
-############ STATS ESTIMATED DISTANCES FOR UK POLLINATORS ##############
-## CLAUDIA GUTIERREZ, MARCH 2022 ###
+################################################
+#                                              #
+#    Stats of estimated dispersal distances    #
+#        for UK insect pollinators             #
+#                                              #
+################################################
 
+## CLAUDIA GUTIERREZ, MARCH 2022 ###
 
 #This code calculates the range of pollinators' dispersal distances required by Condatis. The distances are calculated for three groups: bees, hoverflies and moths. 
 #The distances were calculated using linear regression models using morphological characters of the species. See Methods for details.

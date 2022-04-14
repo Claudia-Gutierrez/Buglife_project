@@ -1,5 +1,9 @@
-#############PREPARATION OF LAYERS FOR CONDATIS#############
-#CLAUDIA GUTIERREZ, APRIL 2022
+################################################
+#                                              #
+#     PREPARATION OF LAYERS FOR CONDATIS       #
+#                                              #
+################################################
+## CLAUDIA GUTIERREZ, APRIL 2022 ###
 
 #This code is designed to obtain the two layers required by Condatis — 'habitat' and 'source & tagets'— in the desired format (*.tif). 
 #The user can choose the Area of Interest (AOI) and resolution of the layers
@@ -21,7 +25,7 @@ library(rgeos)
 library(dplyr)
 
 
-# Select Area of Interest -------------------------------------------------
+# Select Area of Interest (AOI) -------------------------------------------------
 
 
 #Read habitat shapefile
@@ -34,8 +38,8 @@ Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]
 #Read B-Lines shapefile 
 BLines<-readOGR("spatialdata", "BLinesCumbria")
 
-#Create a grid to select a computable landscape, e.g. 2k (2000m)
-grid<- fishnet(Cumbriahab, res = 2000, type = "square")
+#Create a grid to select a computable landscape, e.g. 1k (1000m)
+grid<- fishnet(Cumbriahab, res = 1000, type = "square")
 
 #Select grid polygons where B-lines are distributed
 Blgrid<-grid[BLines,]
@@ -51,7 +55,7 @@ Blgrid@data <- cbind(Blgrid@data, gCentroid(Blgrid,byid = T) %>% coordinates())
 pdf("spatialdata/AOI_BL.pdf")
 BLgridmap<-ggplot() + 
   geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = Blgrid@data, aes(x = x, y = y),label = Blgrid$ID, size=1)+  
+  geom_text(data = Blgrid@data, aes(x = x, y = y),label = Blgrid$ID, size=0.5)+  
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)
 BLgridmap
 dev.off()
@@ -66,7 +70,7 @@ GCB <- readOGR("spatialdata", "gcb")
 GCBgrid<- Blgrid[GCB,]
 ggplot() + 
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=0.25)+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 
 #save pdf with potential areas of interest
@@ -75,7 +79,7 @@ GCBgridmap<- ggplot()+
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)+
   geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "grey", fill = NA)+
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=0.5)+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 GCBgridmap
 dev.off()
