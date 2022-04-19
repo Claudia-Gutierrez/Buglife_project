@@ -5,8 +5,9 @@
 ################################################
 ## CLAUDIA GUTIERREZ, APRIL 2022 ###
 
-#This code is designed to obtain the two layers required by Condatis — 'habitat' and 'source & tagets'— in the desired format (*.tif). 
+#This script is designed to obtain the two layers required by Condatis — 'habitat' and 'source & tagets'— in '*.tif' format 
 #The user can choose the Area of Interest (AOI) and resolution of the layers
+
 #Processing is limited to a maximum 60,000 (six thousand) cells in the study area. A section of the code allows to validate the condition of <60000 cells to either proceed with the analysis or reset the extent and resolution of the AOI. 
 
 # DATA REQUIRED
@@ -52,10 +53,10 @@ Blgrid@data <- cbind(Blgrid@data, gCentroid(Blgrid,byid = T) %>% coordinates())
 
 #visualize potential AOI 
 
-pdf("spatialdata/AOI_BL.pdf")
+pdf("spatialdata/1AOI_BL.pdf")
 BLgridmap<-ggplot() + 
   geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = Blgrid@data, aes(x = x, y = y),label = Blgrid$ID, size=0.5)+  
+  geom_text(data = Blgrid@data, aes(x = x, y = y),label = Blgrid$ID, size=1)+  
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)
 BLgridmap
 dev.off()
@@ -64,22 +65,28 @@ BLgridmap
 #If the interest is to evaluate 'before and after intervention', then add B-line projects map. Otherwise comment from line below to section to #'Clip Area of Interest'
 
 #Read original GCB projects shapefile
+pdf("spatialdata/2GCB.pdf")
 GCB <- readOGR("spatialdata", "gcb")
+GCBpol<-ggplot() + 
+  geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
+dev.off()
+GCBpol
 
 #Select grid polygons where GCB projects are distributed
 GCBgrid<- Blgrid[GCB,]
 ggplot() + 
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=0.25)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
+GCBgrid
 
 #save pdf with potential areas of interest
-pdf("spatialdata/AOI_CGB.pdf")
+pdf("spatialdata/3AOI_CGB.pdf")
 GCBgridmap<- ggplot()+ 
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)+
   geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "grey", fill = NA)+
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=0.5)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 GCBgridmap
 dev.off()
@@ -96,7 +103,10 @@ plot(CumbriahabAOI)
 # Set up a raster "template" for AOI raster
 CumbriahabAOI@bbox #extent of AOI
 ext <- extent(CumbriahabAOI@bbox[1,1],CumbriahabAOI@bbox[1,2],CumbriahabAOI@bbox[2,1],CumbriahabAOI@bbox[2,2]) 
-gridsize <- 10
+
+#Select raster resolution
+gridsize <- 10 #minimum 5m for 1k grid
+#
 r <- raster(ext, res=gridsize)
 
 #Evaluate pixel count of AOI, if there are >60000 pixels in the AOI the script will stop
@@ -108,7 +118,7 @@ habcount<-cellStats(habcount, 'sum')
   
   # Rasterize the habitat of AOI
   CHR <- rasterize(CumbriahabAOI, r,'ID')
-  plot(CHR)
+  #plot(CHR)
   
   # Define habitat quality values in raster
   qual<- as.matrix(read.csv("spatialdata/habitat_quality.csv", header=TRUE))#habitat quality based on Buglife's Resistance Layer and expert opinion  
@@ -118,7 +128,7 @@ habcount<-cellStats(habcount, 'sum')
   crs (hab_qual)<-"EPSG:27700"
   writeRaster(hab_qual,"spatialdata/habitat.tif", overwrite=TRUE)
   
-  plot(hab_qual)
+  plot(hab_qual, main='habitat.tif')
 }
 # Add B-line projects to habitat layer ------------------------------------
 #If not interested comment from line below to section 'Create Source and targets for AOI'
@@ -145,7 +155,7 @@ plot(hab_blcount)
   #save habitat layer with including B-lin projects  
   crs (hab_bl)<-"EPSG:27700"
   writeRaster(hab_bl,"spatialdata/habitatBL.tif", overwrite=TRUE)
-  plot(hab_bl)
+  plot(hab_bl,main='habitatBL.tif')
 }
 
 # Create Source and targets for AOI ------------------------------------
@@ -175,7 +185,7 @@ st1[st@nrows, ]<-1
 
 st[]<-st1
 
-plot(st,col=c("green", "red"))
+plot(st,col=c("green", "red"), main= 'st.tif')
 st
 
 crs (st)<-"EPSG:27700"

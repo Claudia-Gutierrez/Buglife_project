@@ -7,9 +7,11 @@
 
 ## CLAUDIA GUTIERREZ, MARCH 2022 ###
 
-#This code calculates the range of pollinators' dispersal distances required by Condatis. The distances are calculated for three groups: bees, hoverflies and moths. 
+#This script calculates the range of pollinators' dispersal distances required by Condatis. The distances are calculated for three groups: bees, hoverflies and moths. 
+
 #The distances were calculated using linear regression models using morphological characters of the species. See Methods for details.
-#An ANOVA and (post hoc) Dunnett Test is performed to assess if there is a significant diffrence among the dispersal distances of the groups  
+
+#An ANOVA and (post hoc) Dunnett Test is performed to assess if there is a significant difference among the dispersal distances of the groups  
 
 library(car)
 library(DescTools)
@@ -99,12 +101,14 @@ DunnettTest(allpoll$logdist, control="Moths", g=allpoll$Group)
 
 # Dispersal distance values -----------------------------------------------
 
-#Use the following intervals
+#Use the following intervals for Beed and Hoverflies
 summary(bees$dist)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 # 0.01503  0.08470  0.24826  0.82198  0.66327 10.42849 
+  #######                                     ########
 
+#Use the following intervals for Moths
 summary (moths$dist)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 # 0.00043  0.01367  0.14425  1.12600  0.47880 81.11324 
-
+ ########                                     ######## 
