@@ -63,20 +63,20 @@ BLgridmap
 #If the interest is to evaluate 'before and after intervention', then add B-line projects map. Otherwise comment from line below to section to #'Clip Area of Interest'
 
 #Read original GCB projects shapefile
-pdf("spatialdata/2GCB.pdf")
 GCB <- readOGR("spatialdata", "gcb")
 GCBpol<-ggplot() + 
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
-dev.off()
 GCBpol
 
 #Select grid polygons where GCB projects are distributed
+pdf("spatialdata/2GCB.pdf")
 GCBgrid<- Blgrid[GCB,]
 ggplot() + 
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
   geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 GCBgrid
+dev.off()
 
 #save pdf with potential areas of interest
 pdf("spatialdata/3AOI_CGB.pdf")
