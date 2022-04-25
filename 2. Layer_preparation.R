@@ -25,6 +25,7 @@ library(ggplot2)
 library(rgeos)
 library(dplyr)
 
+memory.limit(size=30000) 
 
 # Select Area of Interest (AOI) -------------------------------------------------
 
@@ -39,11 +40,8 @@ Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]
 #Read B-Lines shapefile 
 BLines<-readOGR("spatialdata", "BLinesCumbria")
 
-#Create a grid to select a computable landscape, e.g. 1k (1000m)
-grid<- fishnet(Cumbriahab, res = 1000, type = "square")
-
-#Select grid polygons where B-lines are distributed
-Blgrid<-grid[BLines,]
+#Create a grid to select a computable landscape, e.g. 2k (2000m)
+Blgrid<- fishnet(BLines, res = 2000, type = "square")
 
 #add ID grid
 Blgrid$ID<-as.character(Blgrid@plotOrder)
@@ -86,17 +84,17 @@ GCBgridmap<- ggplot()+
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)+
   geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "grey", fill = NA)+
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1, colour ="blue")+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 GCBgridmap
 dev.off()
 GCBgridmap
 
 #Clip Area Of Interest, select one or more adjacent grid cells based on ID
-aoi<- Blgrid[Blgrid$ID=='400',] # [Blgrid$ID=='x'|Blgrid$ID=='y',]
+aoi<- Blgrid[Blgrid$ID=='342',] # [Blgrid$ID=='x'|Blgrid$ID=='y',]
 crs (aoi)<-"EPSG:27700"
-CumbriahabAOI<- Cumbriahab[aoi, ]
-plot(CumbriahabAOI)
+CumbriahabAOI<- crop(Cumbriahab, aoi)
+plot(aoi+CumbriahabAOI)
 
 # Evaluate Condatis condition ---------------------------------------------
 
@@ -105,7 +103,7 @@ CumbriahabAOI@bbox #extent of AOI
 ext <- extent(CumbriahabAOI@bbox[1,1],CumbriahabAOI@bbox[1,2],CumbriahabAOI@bbox[2,1],CumbriahabAOI@bbox[2,2]) 
 
 #Select raster resolution
-gridsize <- 10 #minimum 5m for 1k grid
+gridsize <- 5 #minimum 5m for 1k grid
 #
 r <- raster(ext, res=gridsize)
 
@@ -130,6 +128,7 @@ habcount<-cellStats(habcount, 'sum')
   
   plot(hab_qual, main='habitat.tif')
 }
+
 # Add B-line projects to habitat layer ------------------------------------
 #If not interested comment from line below to section 'Create Source and targets for AOI'
 

@@ -58,7 +58,7 @@ Condatis <- function(hab, st, R, powerthresh, disp){
   st <- as.data.frame(rasterToPoints(st,fun = function(x){!is.na(x)}, spatial = F))
   names(st) <- c('xm', 'ym', 'label')
   st$x <- st$xm/scaler
-  st$y <- st$xm/scaler
+  st$y <- st$ym/scaler
   
   #Get the distances between each cell of habitat and every other cell
   len<-dim(apt)[1]
