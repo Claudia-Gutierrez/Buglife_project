@@ -1,14 +1,16 @@
 ################################################
 #                                              #
-#   Condatis Function  (Buglife's adaption)    #
+#   Speed change before and after intervention #
 #                                              #
 ################################################
 
-#This script runs the Condatis function to calculate the speed metric in the landscape selected in step 2
+#This script runs the Condatis function to calculate the speed metric in the landscapes selected in step 2
 
 #The script iterates the calculation of speed using different dispersal distances within the range estimated in step 1
 
 #The result is a table with the speed corresponding to a particular dispersal distance
+
+#The area under the curve (AUC) of dispersal distance vs speed is calculated for both landscapes, i.e. habitat without B-line project and habitat with B-line project intervention. Then, the percentage of change in speed between both landscape curves is calculated.
 
 #INPUTS:
 # Hab - raster of the habitat you wish to measure connectivity over (habitat.tif/ habitat_bl.tif obtained with the layer preparation script)
@@ -24,6 +26,7 @@ library(dplyr)
 library(ggplot2)
 library(maptools)
 library(scales)
+library(DescTools)
 
 # Run Condatis with dispersal distance iteration --------------------------
 
@@ -81,7 +84,6 @@ con<- data.frame(test_result %>%
 
 write.csv(con, "conductance/test_bl.csv")
 
-
 # Plot results ------------------------------------------------------------
 
 #Joining results of the conductance of landscapes with ('B-line') and without ('No B-line') B-line project intervention
@@ -109,7 +111,9 @@ ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))
 
 
 
-library(DescTools)
+
+# Estimate change of speed due to intervention ----------------------------
+
 nobl_area<-AUC(conductance$disp_dist, conductance$`No B-line`)
 nobl_area
 bl_area<-AUC(conductance$disp_dist, conductance$`B-line`)

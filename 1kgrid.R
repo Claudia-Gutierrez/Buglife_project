@@ -1,22 +1,3 @@
-################################################
-#                                              #
-#     PREPARATION OF LAYERS FOR CONDATIS       #
-#                                              #
-################################################
-## CLAUDIA GUTIERREZ, APRIL 2022 ###
-
-#This script is designed to obtain the two layers required by Condatis — 'habitat' and 'source & tagets'— in '*.tif' format 
-#The user can choose the Area of Interest (AOI) and resolution of the layers
-
-#Processing is limited to a maximum 60,000 (six thousand) cells in the study area. A section of the code allows to validate the condition of <60000 cells to either proceed with the analysis or reset the extent and resolution of the AOI. 
-
-# DATA REQUIRED
-#1. Habitat shapefile: e.g. Cumbria Local Nature Recovery Habitats Basemap
-#2. B-Line shapefile
-#3. B-Line projects shapefile: e.g. 'Get Cumbria Buzzing projects' map
-
-######################################################################
-
 library (rgdal)
 library(raster)
 library(terra)
@@ -40,25 +21,25 @@ Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]
 #Read B-Lines shapefile 
 BLines<-readOGR("spatialdata", "BLinesCumbria")
 
-#Create a grid to select a computable landscape, e.g. 2k (2000m)
-Blgrid<- fishnet(BLines, res = 2000, type = "square")
+#Create a grid to select a computable landscape, e.g. 1k (1000m)
+Blgrid1k<- fishnet(BLines, res = 1000, type = "square")
 
 #add ID grid
-Blgrid$ID<-as.character(Blgrid@plotOrder)
+Blgrid1k$ID<-as.character(Blgrid1k@plotOrder)
 
 #calculate coordinates to label grid
-Blgrid@data <- cbind(Blgrid@data, gCentroid(Blgrid,byid = T) %>% coordinates())
+Blgrid1k@data <- cbind(Blgrid1k@data, gCentroid(Blgrid1k,byid = T) %>% coordinates())
 
 #visualize potential AOI 
 
-pdf("spatialdata/1AOI_BL.pdf")
-BLgridmap<-ggplot() + 
-  geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = Blgrid@data, aes(x = x, y = y),label = Blgrid$ID, size=1)+  
+pdf("spatialdata/1AOI_BL1k.pdf")
+Blgrid1kmap<-ggplot() + 
+  geom_polygon(data = Blgrid1k, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
+  geom_text(data = Blgrid1k@data, aes(x = x, y = y),label = Blgrid1k$ID, size=1)+  
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)
-BLgridmap
+Blgrid1kmap
 dev.off()
-BLgridmap
+Blgrid1kmap
 
 #If the interest is to evaluate 'before and after intervention', then add B-line projects map. Otherwise comment from line below to section to #'Clip Area of Interest'
 
@@ -69,8 +50,8 @@ GCBpol<-ggplot() +
 GCBpol
 
 #Select grid polygons where GCB projects are distributed
-pdf("spatialdata/2GCB.pdf")
-GCBgrid<- Blgrid[GCB,]
+pdf("spatialdata/2GCB1k.pdf")
+GCBgrid<- Blgrid1k[GCB,]
 ggplot() + 
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
   geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1)+
@@ -79,19 +60,19 @@ GCBgrid
 dev.off()
 
 #save pdf with potential areas of interest
-pdf("spatialdata/3AOI_CGB.pdf")
+pdf("spatialdata/3AOI_CGB1k.pdf")
 GCBgridmap<- ggplot()+ 
   geom_polygon(data = BLines, aes(x = long, y = lat, group = group), colour = "red", fill = NA)+
-  geom_polygon(data = Blgrid, aes(x = long, y = lat, group = group), colour = "grey", fill = NA)+
+  geom_polygon(data = Blgrid1k, aes(x = long, y = lat, group = group), colour = "grey", fill = NA)+
   geom_polygon(data = GCBgrid, aes(x = long, y = lat, group = group), colour = "black", fill = NA)+
-  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=1, colour ="blue")+
+  geom_text(data = GCBgrid@data, aes(x = x, y = y),label = GCBgrid$ID, size=0.5, colour ="blue")+
   geom_polygon(data = GCB, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 GCBgridmap
 dev.off()
 GCBgridmap
 
 #Clip Area Of Interest, select one or more adjacent grid cells based on ID
-aoi<- Blgrid[Blgrid$ID=='342',] # [Blgrid$ID=='x'|Blgrid$ID=='y',]
+aoi<- Blgrid1k[Blgrid1k$ID=='1107',] # [Blgrid1k$ID=='x'|Blgrid1k$ID=='y',]
 crs (aoi)<-"EPSG:27700"
 CumbriahabAOI<- crop(Cumbriahab, aoi)
 plot(aoi+CumbriahabAOI)
@@ -103,7 +84,7 @@ aoi@bbox #extent of AOI
 ext <- extent(aoi@bbox[1,1],aoi@bbox[1,2],aoi@bbox[2,1],aoi@bbox[2,2]) 
 
 #Select raster resolution
-gridsize <- 5 #minimum 5m for 1k grid
+gridsize <- 2 #minimum 5m for 1k grid
 #
 r <- raster(ext, res=gridsize)
 
@@ -124,9 +105,9 @@ habcount<-cellStats(habcount, 'sum')
   
   #save tif for Condatis analysis
   crs (hab_qual)<-"EPSG:27700"
-  writeRaster(hab_qual,"spatialdata/habitat.tif", overwrite=TRUE)
+  writeRaster(hab_qual,"spatialdata/habitat1k.tif", overwrite=TRUE)
   
-  plot(hab_qual, main='habitat.tif')
+  plot(hab_qual, main='habitat1k.tif')
 }
 
 # Add B-line projects to habitat layer ------------------------------------
@@ -153,8 +134,8 @@ plot(hab_blcount)
   
   #save habitat layer with including B-lin projects  
   crs (hab_bl)<-"EPSG:27700"
-  writeRaster(hab_bl,"spatialdata/habitatBL.tif", overwrite=TRUE)
-  plot(hab_bl,main='habitatBL.tif')
+  writeRaster(hab_bl,"spatialdata/habitatBL1k.tif", overwrite=TRUE)
+  plot(hab_bl,main='habitatBL1k.tif')
 }
 
 # Create Source and targets for AOI ------------------------------------
@@ -188,6 +169,114 @@ plot(st,col=c("green", "red"), main= 'st.tif')
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st.tif", overwrite=TRUE)
+writeRaster(st,"spatialdata/st1k.tif", overwrite=TRUE)
+
+--------------------
+
+  
+  
+library(raster)
+library(sf)
+library(tidyverse)
+library(rgdal)
+library(dplyr)
+library(ggplot2)
+library(maptools)
+library(scales)
+library(DescTools)
+
+# Run Condatis with dispersal distance iteration --------------------------
+
+
+#Raster of AOI without B-line project
+hab<- raster("spatialdata/habitat1k.tif") #1k square @ 2m resolution
+st<- raster("spatialdata/st1k.tif")
+R<-1000
+
+#Dispersal distance for bees and hoverflies (0.015-10.4km)
+disper <-c(10^seq(-1.8,1,0.1))
+
+#Dispersal distance for moths (0.00043-81.1km)
+#disper <-10^seq(-3.367,1.91,0.2)
+
+test_result<-data.frame()
+for(i in disper) {
+  test<-CondatisNR(hab=hab, st=st, R=R, disp=i)
+  test_result<- rbind(test_result, test$conductance)
+}
+
+colnames(test_result)<-c("disp" , "conductance")
+
+con<- data.frame(test_result %>%
+                   group_by(disp)%>%
+                   summarise(Conduct = mean(conductance)))
+
+write.csv(con, "conductance/test1k.csv")
+
+
+
+
+#Raster of AOI including B-line projects
+hab<-raster("spatialdata/habitatBL1k.tif") #1k square @ 2m resolution
+st<- raster("spatialdata/st1k.tif")
+R<-1000
+
+#Dispersal distance for bees and hoverflies (0.015-10.4km)
+disper <-c(10^seq(-1.8,1,0.1))
+
+#Dispersal distance for moths (0.00043-81.1km)
+#disper <-10^seq(-3.367,1.91,0.2)
+
+test_result<-data.frame()
+for(i in disper) {
+  test<-CondatisNR(hab=hab, st=st, R=R, disp=i)
+  test_result<- rbind(test_result, test$conductance)
+}
+
+colnames(test_result)<-c("disp" , "conductance")
+
+con<- data.frame(test_result %>%
+                   group_by(disp)%>%
+                   summarise(Conduct = mean(conductance)))
+
+write.csv(con, "conductance/test_bl1k.csv")
+
+# Plot results ------------------------------------------------------------
+
+#Joining results of the conductance of landscapes with ('B-line') and without ('No B-line') B-line project intervention
+cond<- data.frame(read.csv("conductance/test1k.csv"))
+cond_bl<- data.frame(read.csv("conductance/test_bl1k.csv"))
+conductance<-data.frame(cond$disp, cond$Conduct, cond_bl$Conduct)
+colnames(conductance)<-c('disp_dist', 'No B-line','B-line')
+
+#Rearranging the conductance data frame to plot both landscapes
+conductance.long <- conductance %>% 
+  select('disp_dist', 'No B-line','B-line') %>% 
+  pivot_longer(-disp_dist, names_to = "Variable", values_to = "speed")
+
+
+#plot absolute dispersal distance vs log speed
+ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
+  geom_point()+
+  labs(x = 'Dispersal distance [km]', y='log(Speed)')
+
+#plot log dispersal distance vs log speed
+ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable)) + 
+  geom_point()+
+  labs(x = 'log_Dispersal distance (km)', y='log(Speed)' )+
+  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))
+
+
+
+
+# Estimate change of speed due to intervention ----------------------------
+
+nobl_area<-AUC(conductance$disp_dist, conductance$`No B-line`)
+nobl_area
+bl_area<-AUC(conductance$disp_dist, conductance$`B-line`)
+bl_area
+change<-bl_area-nobl_area
+perc_change1k<-(change/nobl_area)*100
+perc_change1k
 
 
