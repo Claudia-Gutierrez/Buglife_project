@@ -31,7 +31,7 @@ boxplot(dist~Group, data)
 
 #Log-transformed data
 data_1<-data
-data_1$logdist<-log(data$dist)
+data_1$logdist<-log10(data$dist)
 hist(data_1$logdist)
 
 boxplot(logdist~Group, data_1)
@@ -43,12 +43,14 @@ mothsout<-boxplot(moths$logdist, plot=FALSE)$out
 moths<- moths[-which(moths$logdist %in% mothsout),]
 mothsout<-boxplot(moths$logdist)
 
+
 hoverfly<-subset(data_1, data_1$Group=="Hoverfly")
 hoverflyout<-boxplot(hoverfly$logdist, plot=FALSE)$out
 hoverfly<- hoverfly[-which(hoverfly$logdist %in% hoverflyout),]
 hoverflyout<-boxplot(hoverfly$logdist)
 
 bees<-subset(data_1, data_1$Group=="Bees")
+
 
 allpoll<- rbind(moths, bees, hoverfly)
 boxplot(logdist~Group, allpoll)

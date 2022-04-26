@@ -103,7 +103,7 @@ aoi@bbox #extent of AOI
 ext <- extent(aoi@bbox[1,1],aoi@bbox[1,2],aoi@bbox[2,1],aoi@bbox[2,2]) 
 
 #Select raster resolution
-gridsize <- 5 #minimum 5m for 1k grid
+gridsize <- 5 #minimum 5m for 2k grid
 #
 r <- raster(ext, res=gridsize)
 
@@ -126,7 +126,7 @@ habcount<-cellStats(habcount, 'sum')
   crs (hab_qual)<-"EPSG:27700"
   writeRaster(hab_qual,"spatialdata/habitat.tif", overwrite=TRUE)
   
-  plot(hab_qual, main='habitat.tif')
+  plot(hab_qual, main='habitat.tif', col = topo.colors(5,rev = TRUE),zlim=c(0,1))
 }
 
 # Add B-line projects to habitat layer ------------------------------------
@@ -154,7 +154,7 @@ plot(hab_blcount)
   #save habitat layer with including B-lin projects  
   crs (hab_bl)<-"EPSG:27700"
   writeRaster(hab_bl,"spatialdata/habitatBL.tif", overwrite=TRUE)
-  plot(hab_bl,main='habitatBL.tif')
+  plot(hab_bl,main='habitatBL.tif',  col = topo.colors(5,rev = TRUE),zlim=c(0,1))
 }
 
 # Create Source and targets for AOI ------------------------------------
@@ -165,7 +165,7 @@ st[]<-NA
 st@nrows
 st1<- as.matrix(st)
 st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[st@nrows-3, ]<-1  
 
 # movement NORTH TO SOUTH
 # st1<- as.matrix(st)
@@ -184,7 +184,7 @@ st1[st@nrows, ]<-1
 
 st[]<-st1
 
-plot(st,col=c("green", "red"), main= 'st.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'st.tif')
 st
 
 crs (st)<-"EPSG:27700"

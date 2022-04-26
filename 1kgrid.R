@@ -107,7 +107,7 @@ habcount<-cellStats(habcount, 'sum')
   crs (hab_qual)<-"EPSG:27700"
   writeRaster(hab_qual,"spatialdata/habitat1k.tif", overwrite=TRUE)
   
-  plot(hab_qual, main='habitat1k.tif')
+  plot(hab_qual, main='habitat1k.tif',col = topo.colors(5,rev = TRUE),zlim=c(0,1))
 }
 
 # Add B-line projects to habitat layer ------------------------------------
@@ -135,7 +135,7 @@ plot(hab_blcount)
   #save habitat layer with including B-lin projects  
   crs (hab_bl)<-"EPSG:27700"
   writeRaster(hab_bl,"spatialdata/habitatBL1k.tif", overwrite=TRUE)
-  plot(hab_bl,main='habitatBL1k.tif')
+  plot(hab_bl,main='habitatBL1k.tif',  col = topo.colors(5,rev = TRUE),zlim=c(0,1))
 }
 
 # Create Source and targets for AOI ------------------------------------
@@ -146,7 +146,7 @@ st[]<-NA
 st@nrows
 st1<- as.matrix(st)
 st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[st@nrows-3, ]<-1  
 
 # movement NORTH TO SOUTH
 # st1<- as.matrix(st)
@@ -165,7 +165,7 @@ st1[st@nrows, ]<-1
 
 st[]<-st1
 
-plot(st,col=c("green", "red"), main= 'st.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'st.tif')
 st
 
 crs (st)<-"EPSG:27700"
@@ -256,15 +256,17 @@ conductance.long <- conductance %>%
 
 
 #plot absolute dispersal distance vs log speed
-ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
-  geom_point()+
-  labs(x = 'Dispersal distance [km]', y='log(Speed)')
+ggplot(conductance.long, aes(disp_dist, speed, colour = Variable)) + 
+  geom_point(size = 4)+
+  labs(x = 'Dispersal distance [km]', y='Speed')+
+  theme(text = element_text(size = 20))
 
 #plot log dispersal distance vs log speed
-ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable)) + 
-  geom_point()+
+ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))+ 
+  geom_point(size = 4)+
   labs(x = 'log_Dispersal distance (km)', y='log(Speed)' )+
-  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))
+  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))+
+  theme(text = element_text(size = 20))
 
 
 
@@ -276,6 +278,7 @@ nobl_area
 bl_area<-AUC(conductance$disp_dist, conductance$`B-line`)
 bl_area
 change<-bl_area-nobl_area
+change
 perc_change1k<-(change/nobl_area)*100
 perc_change1k
 

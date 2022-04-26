@@ -32,7 +32,11 @@ library(DescTools)
 
 
 #Raster of AOI without B-line project
-hab<- raster("spatialdata/habitat.tif")
+hab<- raster("spatialdata/habitat.tif") #2k grid @ 5m resolution
+
+#Raster of AOI including B-line projects
+#hab<-raster("spatialdata/habitatBL.tif") #2k grid @ 5m resolution
+
 st<- raster("spatialdata/st.tif")
 R<-1000
 
@@ -60,7 +64,8 @@ write.csv(con, "conductance/test.csv")
 
 
 #Raster of AOI including B-line projects
-hab<-raster("spatialdata/habitatBL.tif")
+hab<-raster("spatialdata/habitatBL.tif") #2k square @ 5m resolution
+
 st<- raster("spatialdata/st.tif")
 R<-1000
 
@@ -99,15 +104,17 @@ conductance.long <- conductance %>%
 
 
 #plot absolute dispersal distance vs log speed
-ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
-  geom_point()+
-  labs(x = 'Dispersal distance [km]', y='log(Speed)')
+ggplot(conductance.long, aes(disp_dist, speed, colour = Variable)) + 
+  geom_point(size = 4)+
+  labs(x = 'Dispersal distance [km]', y='Speed')+
+  theme(text = element_text(size = 20))
 
 #plot log dispersal distance vs log speed
-ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable)) + 
-  geom_point()+
+ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))+ 
+  geom_point(size = 4)+
   labs(x = 'log_Dispersal distance (km)', y='log(Speed)' )+
-  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))
+  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))+
+  theme(text = element_text(size = 20))  
 
 
 
