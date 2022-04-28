@@ -125,13 +125,13 @@ plot(hab_blcount)
   if (hab_blcount>60000)
     stop("too many cells")
   
-  #save habitat 1 layer with including B-lin projects  
+  #save habitat 1 layer within B-line  
   crs (hab_bl)<-"EPSG:27700"
   writeRaster(hab_bl,"spatialdata/habitatW.tif", overwrite=TRUE)
   plot(hab_bl,main='habitatW.tif',  col = topo.colors(5,rev = TRUE),zlim=c(0,1))
 }
 
-# Create Source and targets for AOI ------------------------------------
+# Create Source and targets for AOI1 ------------------------------------
 stW <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 stW[]<-NA
 
@@ -222,7 +222,7 @@ plot(hab_blcount)
   if (hab_blcount>60000)
     stop("too many cells")
   
-  #save habitat 1 layer with including B-line projects  
+  #save habitat 2 layer outside B-line projects  
   crs (hab_bl)<-"EPSG:27700"
   writeRaster(hab_bl,"spatialdata/habitatO.tif", overwrite=TRUE)
   plot(hab_bl,main='habitatO.tif',  col = topo.colors(5,rev = TRUE),zlim=c(0,1))
