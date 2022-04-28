@@ -1,6 +1,7 @@
 ################################################
 #                                              #
 #     PREPARATION OF LAYERS FOR CONDATIS       #
+#      *BEFORE AND AFTER INTERVENTION*         #    
 #                                              #
 ################################################
 ## CLAUDIA GUTIERREZ, APRIL 2022 ###

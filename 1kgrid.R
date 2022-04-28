@@ -255,11 +255,18 @@ conductance.long <- conductance %>%
   pivot_longer(-disp_dist, names_to = "Variable", values_to = "speed")
 
 
-#plot absolute dispersal distance vs log speed
+#plot absolute dispersal distance vs speed
 ggplot(conductance.long, aes(disp_dist, speed, colour = Variable)) + 
   geom_point(size = 4)+
   labs(x = 'Dispersal distance [km]', y='Speed')+
   theme(text = element_text(size = 20))
+
+#plot absolute dispersal distance vs speed
+ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
+  geom_point(size = 4)+
+  labs(x = 'Dispersal distance [km]', y='Speed')+
+  theme(text = element_text(size = 20))
+
 
 #plot log dispersal distance vs log speed
 ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))+ 
