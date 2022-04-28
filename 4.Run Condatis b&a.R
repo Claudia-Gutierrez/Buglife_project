@@ -112,7 +112,7 @@ ggplot(conductance.long, aes(disp_dist, speed, colour = Variable)) +
 #plot absolute dispersal distance vs speed
 ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
   geom_point(size = 4)+
-  labs(x = 'Dispersal distance [km]', y='Speed')+
+  labs(x = 'Dispersal distance [km]', y='log(Speed)')+
   theme(text = element_text(size = 20))
 
 

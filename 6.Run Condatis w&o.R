@@ -86,15 +86,15 @@ write.csv(con, "conductance/testO.csv")
 
 # Plot results ------------------------------------------------------------
 
-#Joining results of the conductance of landscapes with ('B-line') and without ('No B-line') B-line project intervention
-cond<- data.frame(read.csv("conductance/testW.csv"))
-cond_bl<- data.frame(read.csv("conductance/testO.csv"))
-conductance<-data.frame(cond$disp, cond$Conduct, cond_bl$Conduct)
-colnames(conductance)<-c('disp_dist', 'No B-line','B-line')
+#Joining results of the conductance of landscapes within('Within BL')) and outside ('Outside BL') B-lines
+condW<- data.frame(read.csv("conductance/testW.csv"))
+condO<- data.frame(read.csv("conductance/testO.csv"))
+conductance<-data.frame(cond$disp, condW$Conduct, condO$Conduct)
+colnames(conductance)<-c('disp_dist', 'Whithin BL','Outside BL')
 
 #Rearranging the conductance data frame to plot both landscapes
 conductance.long <- conductance %>% 
-  select('disp_dist', 'No B-line','B-line') %>% 
+  select('disp_dist', 'Whithin BL','Outside BL') %>% 
   pivot_longer(-disp_dist, names_to = "Variable", values_to = "speed")
 
 
@@ -107,7 +107,7 @@ ggplot(conductance.long, aes(disp_dist, speed, colour = Variable)) +
 #plot absolute dispersal distance vs log speed
 ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
   geom_point(size = 4)+
-  labs(x = 'Dispersal distance [km]', y='Speed')+
+  labs(x = 'Dispersal distance [km]', y='log(Speed)')+
   theme(text = element_text(size = 20))
 
 
@@ -123,10 +123,10 @@ ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))
 
 # Estimate change of speed due to intervention ----------------------------
 
-nobl_area<-AUC(conductance$disp_dist, conductance$`No B-line`)
-nobl_area
-bl_area<-AUC(conductance$disp_dist, conductance$`B-line`)
-bl_area
-change<-bl_area-nobl_area
-perc_change<-(change/nobl_area)*100
-perc_change
+Wbl_area<-AUC(conductance$disp_dist, conductance$`Whithin BL`)
+Wbl_area
+Obl_area<-AUC(conductance$disp_dist, conductance$`Outside BL`)
+Obl_area
+change<-Wbl_area-Obl_area
+perc_changeWO<-(change/Obl_area)*100
+perc_changeWO
