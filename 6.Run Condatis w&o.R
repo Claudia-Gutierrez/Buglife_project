@@ -37,7 +37,7 @@ st<- raster("spatialdata/stW.tif")
 R<-1000
 
 #Dispersal distance for bees and hoverflies (0.015-10.4km)
-disper <-c(10^seq(-1.8,1,0.1))
+disper <-c(10^seq(-1.8,0.5,0.1)) #maximum distance between 
 
 #Dispersal distance for moths (0.00043-81.1km)
 #disper <-10^seq(-3.367,1.91,0.2)
@@ -65,7 +65,7 @@ st<- raster("spatialdata/stO.tif")
 R<-1000
 
 #Dispersal distance for bees and hoverflies (0.015-10.4km)
-disper <-c(10^seq(-1.8,1,0.1))
+disper <-c(10^seq(-1.8,0.5,0.1))
 
 #Dispersal distance for moths (0.00043-81.1km)
 #disper <-10^seq(-3.367,1.91,0.2)
@@ -114,8 +114,8 @@ ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) +
 #plot log dispersal distance vs log speed
 ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))+ 
   geom_point(size = 4)+
-  labs(x = 'log_Dispersal distance (km)', y='log(Speed)' )+
-  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))+
+  labs(x = 'log (Dispersal distance) [km]', y='log(Speed)' )+
+  scale_x_continuous(breaks=c(-1.5,-1,-0.5,0,0.5))+
   theme(text = element_text(size = 20))
 
 

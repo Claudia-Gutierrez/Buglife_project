@@ -32,16 +32,12 @@ library(DescTools)
 
 
 #Raster of AOI without B-line project
-hab<- raster("spatialdata/habitat.tif") #2k grid @ 5m resolution
-
-#Raster of AOI including B-line projects
-#hab<-raster("spatialdata/habitatBL.tif") #2k grid @ 5m resolution
-
-st<- raster("spatialdata/st.tif")
+hab<- raster("spatialdata/habitat3k.tif") #3k grid @ 10m resolution
+st<- raster("spatialdata/st3k.tif")
 R<-1000
 
 #Dispersal distance for bees and hoverflies (0.015-10.4km)
-disper <-c(10^seq(-1.8,1,0.1))
+disper <-c(10^seq(-1.8,0.5,0.1))
 
 #Dispersal distance for moths (0.00043-81.1km)
 #disper <-10^seq(-3.367,1.91,0.2)
@@ -58,19 +54,17 @@ con<- data.frame(test_result %>%
                    group_by(disp)%>%
                    summarise(Conduct = mean(conductance)))
 
-write.csv(con, "conductance/test.csv")
-
+write.csv(con, "conductance/test3k.csv")
 
 
 
 #Raster of AOI including B-line projects
-hab<-raster("spatialdata/habitatBL.tif") #2k square @ 5m resolution
-
-st<- raster("spatialdata/st.tif")
+hab<-raster("spatialdata/habitatBL3k.tif") #2k square @ 5m resolution
+st<- raster("spatialdata/st3k.tif")
 R<-1000
 
 #Dispersal distance for bees and hoverflies (0.015-10.4km)
-disper <-c(10^seq(-1.8,1,0.1))
+disper <-c(10^seq(-1.8,0.5,0.1))
 
 #Dispersal distance for moths (0.00043-81.1km)
 #disper <-10^seq(-3.367,1.91,0.2)
@@ -87,7 +81,7 @@ con<- data.frame(test_result %>%
                    group_by(disp)%>%
                    summarise(Conduct = mean(conductance)))
 
-write.csv(con, "conductance/test_bl.csv")
+write.csv(con, "conductance/test_bl3k.csv")
 
 # Plot results ------------------------------------------------------------
 
@@ -119,8 +113,8 @@ ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) +
 #plot log dispersal distance vs log speed
 ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))+ 
   geom_point(size = 4)+
-  labs(x = 'log_Dispersal distance (km)', y='log(Speed)' )+
-  scale_x_continuous(breaks=c(-1,0,1), labels=c("-1 (0.1)","0 (1)", "1 (10)"))+
+  labs(x = 'log (Dispersal distance) [km]', y='log(Speed)' )+
+  scale_x_continuous(breaks=c(-1.5,-1,-0.5,0,0.5))+
   theme(text = element_text(size = 20))
 
 
