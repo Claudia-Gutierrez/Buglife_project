@@ -33,7 +33,7 @@ memory.limit(size=30000)
 
 #Read habitat shapefile
 Cumbriahab <- readOGR("spatialdata", "CumbriaHab")
-# Create Habitat IDs (to be replace by quality value below)
+# Create Habitat IDs (to be replaced by quality value below)
 hab<- unique(Cumbriahab$LNRNHab)
 habdf<- data.frame(ID = 1:length(hab), hab = hab)
 Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]

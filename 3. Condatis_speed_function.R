@@ -8,7 +8,7 @@
 ## Adapted by: Claudia Gutierrez (April 2022)
 
 
-# This function runs Condatis without generating the raster and shapefile outputs. If needed, the sections to create this outputs can be uncommented.
+# This function runs Condatis without generating the raster and shapefile outputs.
 
 # Condatis function (Buglife) -------------------------------------------------------
 

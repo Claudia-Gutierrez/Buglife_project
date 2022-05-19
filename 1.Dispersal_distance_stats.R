@@ -103,7 +103,7 @@ DunnettTest(allpoll$logdist, control="Moths", g=allpoll$Group)
 
 # Dispersal distance values -----------------------------------------------
 
-#Use the following intervals for Beed and Hoverflies
+#Use the following intervals for Bees and Hoverflies
 summary(bees$dist)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 # 0.01503  0.08470  0.24826  0.82198  0.66327 10.42849 

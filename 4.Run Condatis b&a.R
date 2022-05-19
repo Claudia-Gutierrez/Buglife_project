@@ -6,17 +6,17 @@
 
 #This script runs the Condatis function to calculate the speed metric in the landscapes selected in step 2
 
-#The script iterates the calculation of speed using different dispersal distances within the range estimated in step 1
+#The script iterates the calculation of speed using different dispersal distances within the range estimated in step 1 and 2
 
 #The result is a table with the speed corresponding to a particular dispersal distance
 
-#The area under the curve (AUC) of dispersal distance vs speed is calculated for both landscapes, i.e. habitat without B-line project and habitat with B-line project intervention. Then, the percentage of change in speed between both landscape curves is calculated.
+#The area under the curve (AUC) of dispersal distance vs speed is calculated for both landscapes, i.e. habitat without B-line project and habitat with B-line project intervention. Then, the percentage of change of speed between both landscape curves is calculated.
 
 #INPUTS:
-# Hab - raster of the habitat you wish to measure connectivity over (habitat.tif/ habitat_bl.tif obtained with the layer preparation script)
+# Hab - raster of the habitat you wish to measure connectivity over (habitat.tif/ habitat_bl.tif obtained with the layer preparation script step 2)
 # st - raster of location of sources and targets (st.tif obtained with the layer preparation script)
-# R - R value of the species moving (number of movers produced per km^2 of habitat), fixed to 1000
-# disp - range of dispersal distance per group
+# R - R value of the species moving (number of movers produced per km^2 of habitat), fixed to 1000 for all species
+# disper - range of dispersal distance 
 
 library(raster)
 library(sf)
@@ -36,11 +36,9 @@ hab<- raster("spatialdata/habitat3k.tif") #3k grid @ 10m resolution
 st<- raster("spatialdata/st3k.tif")
 R<-1000
 
-#Dispersal distance for bees and hoverflies (0.015-10.4km)
+#Range defined between the minimum distance for bees and maximum distance between the source and target[Dispersal distance for bees and hoverflies: 0.015-10.4km; and for moths 0.00043-81.1km]
 disper <-c(10^seq(-1.8,0.5,0.1))
 
-#Dispersal distance for moths (0.00043-81.1km)
-#disper <-10^seq(-3.367,1.91,0.2)
 
 test_result<-data.frame()
 for(i in disper) {
@@ -59,15 +57,12 @@ write.csv(con, "conductance/test3k.csv")
 
 
 #Raster of AOI including B-line projects
-hab<-raster("spatialdata/habitatBL3k.tif") #2k square @ 5m resolution
+hab<-raster("spatialdata/habitatBL3k.tif") #3k grid @ 10m resolution
 st<- raster("spatialdata/st3k.tif")
 R<-1000
 
-#Dispersal distance for bees and hoverflies (0.015-10.4km)
+#Range defined between the minimum distance for bees and maximum distance between the source and target[Dispersal distance for bees and hoverflies: 0.015-10.4km; and for moths 0.00043-81.1km]
 disper <-c(10^seq(-1.8,0.5,0.1))
-
-#Dispersal distance for moths (0.00043-81.1km)
-#disper <-10^seq(-3.367,1.91,0.2)
 
 test_result<-data.frame()
 for(i in disper) {
@@ -116,8 +111,6 @@ ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))
   labs(x = 'log (Dispersal distance) [km]', y='log(Speed)' )+
   scale_x_continuous(breaks=c(-1.5,-1,-0.5,0,0.5))+
   theme(text = element_text(size = 20))
-
-
 
 
 # Estimate change of speed due to intervention ----------------------------
