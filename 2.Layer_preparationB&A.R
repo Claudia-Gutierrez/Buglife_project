@@ -44,6 +44,9 @@ BLines<-readOGR("spatialdata", "BLinesCumbria")
 #Create a grid to select a computable landscape, e.g. 3k (3000m)
 Blgrid3k<- fishnet(BLines, res = 3000, type = "square")
 
+#Save grid (optional)
+#writeOGR(Blgrid3k, "spatialdata", "Blgrid3k", driver = "ESRI Shapefile") 
+
 #add ID grid
 Blgrid3k$ID<-as.character(Blgrid3k@plotOrder)
 

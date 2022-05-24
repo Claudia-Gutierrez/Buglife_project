@@ -15,6 +15,7 @@
 
 library(car)
 library(DescTools)
+library(ggplot2)
 
 # Explore data ------------------------------------------------------------
 
@@ -53,7 +54,17 @@ bees<-subset(data_1, data_1$Group=="Bees")
 
 
 allpoll<- rbind(moths, bees, hoverfly)
-boxplot(logdist~Group, allpoll)
+
+ggplot(allpoll, aes(x=Group, y=logdist)) +
+  stat_boxplot(geom = "errorbar", width = 0.25) +
+  geom_boxplot(width=0.5)+
+  theme_minimal()+
+  theme(legend.position="none", aspect.ratio = 1, text = element_text(size = 18))+
+  scale_y_continuous(breaks=c(-3,-2,-1,0,1,2), labels=c("0.001", "0.01", "0.1","1","10","100"))+
+  ylab('Dispersal distance (km)')+
+  scale_x_discrete(label=c("Bees", "Hoverflies","Moths"))
+  
+
 
 
 # Tests difference among groups -------------------------------------------
