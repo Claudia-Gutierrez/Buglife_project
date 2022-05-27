@@ -5,9 +5,9 @@ library(ggplot2)
 data<-as.data.frame(read.delim(file.path("data","Moths_flightdist.txt"),na.strings = c("NA",""),stringsAsFactors=T))
 
 #Linear regression using log transformation of variables as suggested by Kendal et al. 2019
-model <- lm(log(data$AvgFlightDistance) ~ log(data$estimated_dry_mass))
+model <- lm(log10(data$AvgFlightDistKm) ~ log10(data$estimated_dry_mass))
 
-plot(log(AvgFlightDistance) ~ log(estimated_dry_mass), data = data)
+plot(log(AvgFlightDistKm) ~ log(estimated_dry_mass), data = data)
 abline(model)
 
 summary(model)

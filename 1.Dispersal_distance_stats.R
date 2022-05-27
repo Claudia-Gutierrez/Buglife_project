@@ -23,8 +23,8 @@ library(ggplot2)
 data<-as.data.frame(read.delim(file.path("data","all_spp_dist.txt"),na.strings = c("NA",""),stringsAsFactors=T))
 
 summary(data$dist)
-#Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-#0.0004   0.0463   0.2119   1.9512   0.4523 741.1294 
+#   Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+#0.0004   0.0443   0.2116   1.9534   0.4516 738.4855 
 
 hist(data$dist,breaks = 100, xlab="distance[km]", ylab="Frequency", main=NULL)
 
@@ -43,6 +43,7 @@ moths<-subset(data_1, data_1$Group=="Moths")
 mothsout<-boxplot(moths$logdist, plot=FALSE)$out
 moths<- moths[-which(moths$logdist %in% mothsout),]
 mothsout<-boxplot(moths$logdist)
+summary(moths$dist)
 
 
 hoverfly<-subset(data_1, data_1$Group=="Hoverfly")
@@ -55,13 +56,15 @@ bees<-subset(data_1, data_1$Group=="Bees")
 
 allpoll<- rbind(moths, bees, hoverfly)
 
+boxplot(logdist~Group, allpoll)
+
 ggplot(allpoll, aes(x=Group, y=logdist)) +
   stat_boxplot(geom = "errorbar", width = 0.25) +
   geom_boxplot(width=0.5)+
   theme_minimal()+
   theme(legend.position="none", aspect.ratio = 1, text = element_text(size = 18))+
   scale_y_continuous(breaks=c(-3,-2,-1,0,1,2), labels=c("0.001", "0.01", "0.1","1","10","100"))+
-  ylab('Dispersal distance (km)')+
+  ylab('Log (Dispersal distance) [km]')+
   scale_x_discrete(label=c("Bees", "Hoverflies","Moths"))
   
 
