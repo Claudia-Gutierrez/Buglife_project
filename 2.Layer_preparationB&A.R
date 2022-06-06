@@ -35,6 +35,9 @@ memory.limit(size=30000)
 Cumbriahab <- readOGR("spatialdata", "CumbriaHab")
 # Create Habitat IDs (to be replaced by quality value below)
 hab<- unique(Cumbriahab$LNRNHab)
+#create table of Habitat type and respective ID
+write.csv(hab, "data/habID.csv")
+#assign habitat ID to shapefile polygons
 habdf<- data.frame(ID = 1:length(hab), hab = hab)
 Cumbriahab$ID <- habdf$ID[match(Cumbriahab$LNRNHab,habdf$hab)]
 
@@ -193,4 +196,5 @@ st
 
 crs (st)<-"EPSG:27700"
 writeRaster(st,"spatialdata/st3k.tif", overwrite=TRUE)
+
 
