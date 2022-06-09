@@ -50,6 +50,10 @@ GCBpol
 #Create a grid to select a computable landscape, e.g. 3k (3000m)
 GCBgrid<- fishnet(GCB, res = 3000, type = "square")
 
+#Save grid (optional)
+writeOGR(GCBgrid, "spatialdata", "GCBgrid3k", driver = "ESRI Shapefile") 
+
+
 #add ID grid
 GCBgrid$ID<-as.character(GCBgrid@plotOrder)
 

@@ -81,37 +81,38 @@ write.csv(con, "conductance/test_bl3k.csv")
 # Plot results ------------------------------------------------------------
 
 #Joining results of the conductance of landscapes with ('B-line') and without ('No B-line') B-line project intervention
-cond<- data.frame(read.csv("conductance/test.csv"))
-cond_bl<- data.frame(read.csv("conductance/test_bl.csv"))
+cond<- data.frame(read.csv("conductance/test3k.csv"))
+cond_bl<- data.frame(read.csv("conductance/test_bl3k.csv"))
 conductance<-data.frame(cond$disp, cond$Conduct, cond_bl$Conduct)
-colnames(conductance)<-c('disp_dist', 'No B-line','B-line')
+colnames(conductance)<-c('disp_dist', 'before GCB','after GCB')
 
 #Rearranging the conductance data frame to plot both landscapes
 conductance.long <- conductance %>% 
-  select('disp_dist', 'No B-line','B-line') %>% 
+  select('disp_dist', 'before GCB','after GCB') %>% 
   pivot_longer(-disp_dist, names_to = "Variable", values_to = "speed")
 
 
 #plot absolute dispersal distance vs speed
 ggplot(conductance.long, aes(disp_dist, speed, colour = Variable)) + 
-  geom_point(size = 4)+
+  geom_point(size = 5)+
   labs(x = 'Dispersal distance [km]', y='Speed')+
-  theme(text = element_text(size = 20))
+  theme(text = element_text(size = 30), legend.position="right",
+        legend.title=element_blank())
 
-#plot absolute dispersal distance vs speed
+#plot absolute dispersal distance vs log speed
 ggplot(conductance.long, aes(disp_dist, log10(speed), colour = Variable)) + 
-  geom_point(size = 4)+
+  geom_point(size = 5)+
   labs(x = 'Dispersal distance [km]', y='log(Speed)')+
-  theme(text = element_text(size = 20))
+  theme(text = element_text(size = 30))
 
 
 #plot log dispersal distance vs log speed
 ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))+ 
-  geom_point(size = 4)+
+  geom_point(size = 5)+
   labs(x = 'log (Dispersal distance) [km]', y='log(Speed)' )+
   scale_x_continuous(breaks=c(-1.5,-1,-0.5,0,0.5))+
-  theme(text = element_text(size = 20))
-
+  theme(text = element_text(size = 30), legend.position="right",
+        legend.title=element_blank())
 
 # Estimate change of speed due to intervention ----------------------------
 

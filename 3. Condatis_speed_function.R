@@ -7,6 +7,8 @@
 ##Shared by Thomas Travers (February 2022) 
 ## Adapted by: Claudia Gutierrez (April 2022)
 
+#Citation: Hodgson JA, Wallis DW, Krishna R, et al. 2016. How to manipulate landscapes to improve the potential for range expansion. Methods in Ecology and Evolution 7: 1558-1566.
+
 
 # This function runs Condatis without generating the raster and shapefile outputs.
 

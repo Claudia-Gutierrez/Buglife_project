@@ -9,11 +9,11 @@
 
 #This script calculates the range of pollinators' dispersal distances required by Condatis. The distances are calculated for three groups: bees, hoverflies and moths. 
 
-#The distances were calculated using linear regression models using morphological characters of the species. See Methods for details.
+#The distances were calculated using linear regression models using morphological characters of the species. See 'UK insect pollinator species and dispersal distance' section in the methods report for details.
 
 #An ANOVA and (post hoc) Dunnett Test is performed to assess if there is a significant difference among the dispersal distances of the groups  
 
-library(car)
+#library(car)
 library(DescTools)
 library(ggplot2)
 
@@ -50,9 +50,11 @@ hoverfly<-subset(data_1, data_1$Group=="Hoverfly")
 hoverflyout<-boxplot(hoverfly$logdist, plot=FALSE)$out
 hoverfly<- hoverfly[-which(hoverfly$logdist %in% hoverflyout),]
 hoverflyout<-boxplot(hoverfly$logdist)
+summary(hoverfly$dist)
+
 
 bees<-subset(data_1, data_1$Group=="Bees")
-
+summary(bees$dist)
 
 allpoll<- rbind(moths, bees, hoverfly)
 
@@ -84,13 +86,11 @@ leveneTest(logdist~Group, allpoll)
 #The variances are unequal
 
 #ANOVA
-model <- aov(logdist ~ Group, data = allpoll)
-summary(model)
-# Df Sum Sq Mean Sq F value Pr(>F)    
-# Group          2    343  171.39   44.78 <2e-16 ***
-#   Residuals   1228   4700    3.83                   
-# ---
-#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+model <- kruskal.test(logdist~ Group, data = allpoll)
+
+# Kruskal-Wallis rank sum test
+# data:  logdist by Group
+# Kruskal-Wallis chi-squared = 46.165, df = 2, p-value = 9.448e-11
 
 #There is a significant difference among groups
 
@@ -128,3 +128,5 @@ summary (moths$dist)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 # 0.00043  0.01367  0.14425  1.12600  0.47880 81.11324 
  ########                                     ######## 
+
+
