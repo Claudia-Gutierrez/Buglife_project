@@ -117,13 +117,13 @@ ggplot(conductance.long, aes(log10(disp_dist), log10(speed), colour = Variable))
 
 # Estimate change of speed due to intervention ----------------------------
 
-nobl_area<-AUC(conductance$disp_dist, conductance$`No B-line`)
+nobl_area<-AUC(conductance$disp_dist, conductance$`before GCB`)
 nobl_area
-bl_area<-AUC(conductance$disp_dist, conductance$`B-line`)
+bl_area<-AUC(conductance$disp_dist, conductance$`after GCB`)
 bl_area
 change<-bl_area-nobl_area
 perc_change<-(change/nobl_area)*100
 perc_change
 
-
+write.csv(perc_change,"conductance/test_3kchange.csv")
 
