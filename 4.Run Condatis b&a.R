@@ -85,6 +85,7 @@ cond<- data.frame(read.csv("conductance/test3k.csv"))
 cond_bl<- data.frame(read.csv("conductance/test_bl3k.csv"))
 conductance<-data.frame(cond$disp, cond$Conduct, cond_bl$Conduct)
 colnames(conductance)<-c('disp_dist', 'before GCB','after GCB')
+write.csv(conductance, "conductance/test_3kdiff.csv")
 
 #Rearranging the conductance data frame to plot both landscapes
 conductance.long <- conductance %>% 
