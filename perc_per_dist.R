@@ -1,3 +1,17 @@
+################################################
+#                                              #
+#       Speed change weighted by species       #
+#                                              #
+################################################
+
+#This script calculates the proportional change of speed before and after intervention
+#It quantifies the percentage of species that fall within dispersal distance bins 
+
+#INPUTS:
+# allpoll - data frame with the all the species and their respective estimated dispersal distance
+# conductance- data frame obtained after runing Condatis analysis which contains speed before and after habitat regeneration 
+
+
 
 library (dplyr)
 library (ggplot2)
