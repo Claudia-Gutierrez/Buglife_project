@@ -1,3 +1,15 @@
+################################################
+#                                              #
+#       Sum of speed weighted by species       #
+#                                              #
+################################################
+
+#This script calculates the proportional change of speed before and after intervention
+#It quantifies the percentage of species that fall within dispersal distance bins 
+
+#INPUTS:
+# allpoll - data frame with the all the species and their respective estimated dispersal distance
+# test_Xdiff.csv- csv obtained after running Condatis analysis which contains speed before and after habitat regeneration per site
 
 library (dplyr)
 library (ggplot2)
@@ -24,25 +36,27 @@ percentage<- percentage %>%
 percentage<-percentage[c(17:40),]
 percentage$X<-as.numeric(c(1:24))
 
-cond_216<- as.data.frame(read.csv("conductance/test_216diff.csv"))
+cond_180<- as.data.frame(read.csv("conductance/test_3kdiff.csv"))
 
-cond_216<- cond_216 %>% 
+cond_180<- cond_180 %>% 
   mutate(across(where(is.numeric), ~ round(., digits = 18)))
 
 
-cond_216<-right_join(percentage, cond_216, by='X')
+cond_180<-right_join(percentage, cond_180, by='X')
 
-cond_216$perc_change.GCB<- ((cond_216$after.GCB-cond_216$before.GCB)/cond_216$before.GCB)
+cond_180$perc_change.GCB<- ((cond_180$after.GCB-cond_180$before.GCB)/cond_180$before.GCB)
 
 
-cond_216$weight_change<-cond_216$perc_change.GCB*cond_216$percentage
+cond_180$weight_change<-cond_180$perc_change.GCB*cond_180$percentage
 
-site216<-as.data.frame(sum(cond_216$weight_change))
-site216$site<- 216
-colnames(site216)<- c("sum_weight_change","site")
+site180<-as.data.frame(sum(cond_180$weight_change))
+site180$site<- 180
+colnames(site180)<- c("sum_weight_change","site")
 
-wieghted_change<-rbind(site180,site189,site190,site207,site209, site215,site216)
+weighted_change<-rbind(site180,site189,site190,site207,site209, site215,site216)
 
+
+write.csv(weighted_change, "conductance/weighted_change.csv")
 
 
 
