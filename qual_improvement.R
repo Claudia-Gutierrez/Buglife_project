@@ -48,6 +48,13 @@ write.csv(improvement, "spatialdata/improvement.csv")
 
 impro_weight<-left_join(weighted_change, improvement, by='site')
 plot(impro_weight$qual_improve,impro_weight$sum_weight_change)
+text(impro_weight$qual_improve,impro_weight$sum_weight_change, labels=impro_weight$site, cex=0.6, pos=2, col="blue")
 
-plot(impro_weight$area_incr,impro_weight$sum_weight_change)
+plot(impro_weight$qual_improve,log10(impro_weight$sum_weight_change))
+text(impro_weight$qual_improve,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
 
+plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
+text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
+
+plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
+text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
