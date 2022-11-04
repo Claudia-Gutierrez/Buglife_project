@@ -56,7 +56,107 @@ Blgrid3k$ID<-as.character(Blgrid3k@plotOrder)
 #calculate coordinates to label grid
 Blgrid3k@data <- cbind(Blgrid3k@data, gCentroid(Blgrid3k,byid = T) %>% coordinates())
 
-################################################ 189 ---------------------------------------------------------------------
+
+# 180 ---------------------------------------------------------------------
+
+#If the interest is to evaluate 'before and after intervention', then add B-line projects map. Otherwise comment from line below to section to #'Clip Area of Interest'
+
+#Read original GCB projects shapefile
+GCB <- readOGR("spatialdata", "gcb")
+
+
+#Clip Area Of Interest, select one or more adjacent grid cells based on ID
+aoi<- Blgrid3k[Blgrid3k$ID=='180',] # [Blgrid3k$ID=='x'|Blgrid3k$ID=='y',]
+crs (aoi)<-"EPSG:27700"
+CumbriahabAOI<- crop(Cumbriahab, aoi)
+plot(aoi+CumbriahabAOI)
+
+# Evaluate Condatis condition ---------------------------------------------
+
+# Set up a raster "template" for AOI raster
+aoi@bbox #extent of AOI
+ext <- extent(aoi@bbox[1,1],aoi@bbox[1,2],aoi@bbox[2,1],aoi@bbox[2,2]) 
+
+#Select raster resolution
+gridsize <- 10
+#
+r <- raster(ext, res=gridsize)
+
+#Evaluate pixel count of AOI, if there are >60000 pixels in the AOI the script will stop
+habcount<- rasterize (CumbriahabAOI, r,1) 
+habcount<-cellStats(habcount, 'sum')
+{
+  if (habcount>60000)
+    stop("too many cells")
+  
+  # Rasterize the habitat of AOI
+  CHR <- rasterize(CumbriahabAOI, r,'ID')
+  #plot(CHR)
+  
+  # Define habitat quality values in raster
+  qual<- as.matrix(read.csv("spatialdata/habitat_quality.csv", header=TRUE))#habitat quality based on Buglife's Resistance Layer and expert opinion  
+  hab_qual<-reclassify(CHR, qual) #replace habitat ID with quality value
+  
+  #save tif for Condatis analysis
+  crs (hab_qual)<-"EPSG:27700"
+  writeRaster(hab_qual,"spatialdata/habitat180.tif", overwrite=TRUE)
+  
+  plot(hab_qual, main='habitat180.tif',col = topo.colors(5,rev = TRUE),zlim=c(0,1))
+}
+
+# Add B-line projects to habitat layer ------------------------------------
+#If not interested comment from line below to section 'Create Source and targets for AOI'
+
+GCB$qual<- 1 #add a column with the habitat quality value
+
+# Rasterize the shapefile with the raster "template" (r) used above
+GCBr <- rasterize(GCB, r,'qual')
+crs (GCBr)<-"EPSG:27700"
+plot(GCBr)
+
+# #Add GCBr to hab_qual (habitat.tif)
+
+hab_bl<- raster:::.ifel(GCBr > 0, 1,hab_qual)#if GCBr==1 then change value in hab_qual to 1
+plot(hab_bl)
+
+hab_blcount<-raster:::.ifel(hab_bl> 0, 1,hab_bl)
+plot(hab_blcount)
+
+{hab_blcount<-cellStats(hab_bl, 'sum')
+  if (hab_blcount>60000)
+    stop("too many cells")
+  
+  #save habitat layer with including B-lin projects  
+  crs (hab_bl)<-"EPSG:27700"
+  writeRaster(hab_bl,"spatialdata/habitatBL180.tif", overwrite=TRUE)
+  plot(hab_bl,main='habitatBL3k.tif',  col = topo.colors(5,rev = TRUE),zlim=c(0,1))
+}
+
+# Create Source and targets for AOI ------------------------------------
+st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
+st[]<-NA
+
+#movement EAST TO WEST
+st@ncols
+st1<- as.matrix(st)
+st1[,1]<-2
+st1[,st@ncols]<-1
+
+st[]<-st1
+
+plot(st,col=c("magenta", "cyan3"), main= 'stEW180.tif')
+image(hab_bl, add = TRUE)
+st
+
+crs (st)<-"EPSG:27700"
+writeRaster(st,"spatialdata/stEW180.tif", overwrite=TRUE)
+
+
+#
+
+
+
+# 189 ---------------------------------------------------------------------
 
 #If the interest is to evaluate 'before and after intervention', then add B-line projects map. Otherwise comment from line below to section to #'Clip Area of Interest'
 
@@ -135,27 +235,20 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st189.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW189.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st189.tif", overwrite=TRUE)
-
-
-
-
-
-
-
-
+writeRaster(st,"spatialdata/stEW180.tif", overwrite=TRUE)
 
 
 #
@@ -238,32 +331,20 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st190.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW190.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st190.tif", overwrite=TRUE)
-
-
-
-
-
-
-
-
-
-
-
-
-
+writeRaster(st,"spatialdata/stEW190.tif", overwrite=TRUE)
 
 
 #
@@ -343,30 +424,25 @@ plot(hab_blcount)
 }
 
 # Create Source and targets for AOI ------------------------------------
+
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st205.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW205.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st205.tif", overwrite=TRUE)
+writeRaster(st,"spatialdata/stEW205.tif", overwrite=TRUE)
 
-
-
-
-
-#
-
-#
 
 
 #
@@ -446,26 +522,25 @@ plot(hab_blcount)
 }
 
 # Create Source and targets for AOI ------------------------------------
+
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st206.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW206.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st206.tif", overwrite=TRUE)
+writeRaster(st,"spatialdata/stEW206.tif", overwrite=TRUE)
 
-#
-
-#
 
 #
 ################################################ 207 ---------------------------------------------------------------------
@@ -547,35 +622,23 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st207.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW207.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st207.tif", overwrite=TRUE)
-
-
-
-
+writeRaster(st,"spatialdata/stEW207.tif", overwrite=TRUE)
 
 #
 
-
-
-
-#
-
-#
-
-
-#
 ################################################ 209 ---------------------------------------------------------------------
 
 #If the interest is to evaluate 'before and after intervention', then add B-line projects map. Otherwise comment from line below to section to #'Clip Area of Interest'
@@ -655,23 +718,22 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st209.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW209.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st209.tif", overwrite=TRUE)
-
+writeRaster(st,"spatialdata/stEW209.tif", overwrite=TRUE)
 
 #
-
 
 #
 ################################################ 215 ---------------------------------------------------------------------
@@ -753,23 +815,20 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st215.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW215.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st215.tif", overwrite=TRUE)
-
-
-#
-
+writeRaster(st,"spatialdata/stEW215.tif", overwrite=TRUE)
 
 
 #
@@ -852,25 +911,20 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st216.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW216.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st216.tif", overwrite=TRUE)
-
-
-
-
-
-
+writeRaster(st,"spatialdata/stEW216.tif", overwrite=TRUE)
 
 
 ################################################ 218 ---------------------------------------------------------------------
@@ -952,26 +1006,25 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+
+#movement EAST TO WEST
+st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
+st[]<-NA
+
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st218.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW218.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st218.tif", overwrite=TRUE)
-
-
-#
-
-
-
-
+writeRaster(st,"spatialdata/stEW218.tif", overwrite=TRUE)
 
 
 #
@@ -1054,28 +1107,21 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st220.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW220.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st220.tif", overwrite=TRUE)
+writeRaster(st,"spatialdata/stEW220.tif", overwrite=TRUE)
 
-
-#
-
-
-
-
-#
-#
 
 ################################################ 221 ---------------------------------------------------------------------
 
@@ -1156,28 +1202,20 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
+#movement EAST TO WEST
+st@ncols
 st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st221.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW221.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st221.tif", overwrite=TRUE)
-
-
-#
-
-
-
-
-#
-
+writeRaster(st,"spatialdata/stEW221.tif", overwrite=TRUE)
 
 
 #
@@ -1260,38 +1298,20 @@ plot(hab_blcount)
 st <- raster(ext, res=gridsize) #extent=CumbriahabAOI@bbox, gridsize defined for habitat 
 st[]<-NA
 
-#movement SOUTH to NORTH
-st@nrows
-st1<- as.matrix(st)
-st1[1,]<-2
-st1[st@nrows, ]<-1  
-
-# movement NORTH TO SOUTH
-# st1<- as.matrix(st)
-# st1[1,]<-1
-# st1[st@nrows, ]<-2
-
-# #movement WEST TO EAST
-# st1<- as.matrix(st)
-# st1[,1]<-1
-# st1[st@ncols, ]<-2
-
 #movement EAST TO WEST
-# st1<- as.matrix(st)
-# st1[,1]<-2
-# st1[st@ncols, ]<-1
+st@ncols
+st1<- as.matrix(st)
+st1[,1]<-2
+st1[,st@ncols]<-1
 
 st[]<-st1
 
-plot(st,col=c("magenta", "cyan3"), main= 'st231.tif')
+plot(st,col=c("magenta", "cyan3"), main= 'stEW231.tif')
+image(hab_bl, add = TRUE)
 st
 
 crs (st)<-"EPSG:27700"
-writeRaster(st,"spatialdata/st231.tif", overwrite=TRUE)
-
-
-
-
+writeRaster(st,"spatialdata/stEW231.tif", overwrite=TRUE)
 
 #
 

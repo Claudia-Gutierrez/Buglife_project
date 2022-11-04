@@ -17,6 +17,7 @@
 
 
 library(raster)
+library(dplyr)
 
 before<- raster("spatialdata/habitat231.tif")
 after<- raster("spatialdata/habitatBL231.tif")
@@ -47,14 +48,16 @@ write.csv(improvement, "spatialdata/improvement.csv")
 # Plot improvement vs weighted change ----------------------------------------
 
 impro_weight<-left_join(weighted_change, improvement, by='site')
-plot(impro_weight$qual_improve,impro_weight$sum_weight_change)
-text(impro_weight$qual_improve,impro_weight$sum_weight_change, labels=impro_weight$site, cex=0.6, pos=2, col="blue")
 
-plot(impro_weight$qual_improve,log10(impro_weight$sum_weight_change))
-text(impro_weight$qual_improve,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
+plot(impro_weight$qual_improve,impro_weight$sum_weight_change, xlab="proportinal increase in summed quality", ylab="proportional increase in \nsummed weighted connectivity")
+text(impro_weight$qual_improve,impro_weight$sum_weight_change, labels=impro_weight$site, cex=0.6, pos=4, col="blue")
+
+plot(impro_weight$qual_improve,log10(impro_weight$sum_weight_change), xlab="proportinal increase in summed quality", ylab="log10(proportional increase in \nsummed weighted connectivity)")
+text(impro_weight$qual_improve,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=4, col="blue")
+
+plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
+text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
 
 plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
 text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
 
-plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
-text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
