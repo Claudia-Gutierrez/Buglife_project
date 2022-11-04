@@ -10,54 +10,181 @@
 #INPUTS:
 # habitatX.tif - tif file created in step 2 of site X before intervention
 #habitatBL.tif- tif file created in step 2 of site X after intervention
-#weighted_change- dataframe with sum of weighted change per site calculated with the 'sum_cond_change' script
+#weighted_change- data frame with sum of weighted change per site calculated with the 'sum_cond_change' script
 
 
-# Improvement -------------------------------------------------------------
+# Improvement function -------------------------------------------------------------
+#This function calculates the proportional increase of habitat quality and area before and after intervention
+
+#INPUTS:
+# before - *.tif of habitat before intervention
+# after- *.tif of habitat before intervention
+# Area given in ha assuming a 10m^2 resolution, adjust accordingly
+
+Improvement_func<-function(before, after, site){
+  library(raster)
+  library(dplyr)
+  
+  qbef<-cellStats(before, stat='sum', na.rm=TRUE)
+  qaft<-cellStats(after, stat='sum', na.rm=TRUE)
+  
+  prop_impro<- (qaft-qbef)/qbef
+  
+  bef1_<- raster::reclassify(before, c(0.01, 1, 1))
+  befcount<-cellStats(bef1_, 'sum')
+  
+  aft1_<- raster::reclassify(after, c(0.01, 1, 1))
+  aftcount<-cellStats(aft1_, 'sum')
+  area_incr<-(aftcount-befcount)/befcount
+  
+  impro<-as.data.frame(prop_impro)
+  impro$area_inc<-area_incr
+  impro$site<- site
+    impro$areabef<-befcount/10000
+  impro$areaaft<-aftcount/10000
+  colnames(impro)<- c("qual_improve","area_incr","site","area_before_ha","area_after_ha")
+  return(impro)
+}
 
 
-library(raster)
-library(dplyr)
 
+# 180 ---------------------------------------------------------------------
+site<-180
+before<- raster("spatialdata/habitat180.tif")
+after<- raster("spatialdata/habitatBL180.tif")
+
+impro180<- Improvement_func(before,after,site)
+
+# 189 ---------------------------------------------------------------------
+site<-189
+before<- raster("spatialdata/habitat189.tif")
+after<- raster("spatialdata/habitatBL189.tif")
+
+impro189<- Improvement_func(before,after,site)
+
+# 190 ---------------------------------------------------------------------
+
+site<-190
+before<- raster("spatialdata/habitat190.tif")
+after<- raster("spatialdata/habitatBL190.tif")
+
+impro190<- Improvement_func(before,after,site)
+
+# 205 ---------------------------------------------------------------------
+site<-205
+before<- raster("spatialdata/habitat205.tif")
+after<- raster("spatialdata/habitatBL205.tif")
+
+impro205<- Improvement_func(before,after,site)
+
+
+# 206 ---------------------------------------------------------------------
+site<-206
+before<- raster("spatialdata/habitat206.tif")
+after<- raster("spatialdata/habitatBL206.tif")
+
+impro206<- Improvement_func(before,after,site)
+
+# 207 ---------------------------------------------------------------------
+site<-207
+before<- raster("spatialdata/habitat207.tif")
+after<- raster("spatialdata/habitatBL207.tif")
+
+impro207<- Improvement_func(before,after,site)
+
+# 209 ---------------------------------------------------------------------
+site<-209
+before<- raster("spatialdata/habitat209.tif")
+after<- raster("spatialdata/habitatBL209.tif")
+
+impro209<- Improvement_func(before,after,site)
+
+# 215 ---------------------------------------------------------------------
+site<-215
+before<- raster("spatialdata/habitat215.tif")
+after<- raster("spatialdata/habitatBL215.tif")
+
+impro215<- Improvement_func(before,after,site)
+
+
+# 216 ---------------------------------------------------------------------
+site<-216
+before<- raster("spatialdata/habitat216.tif")
+after<- raster("spatialdata/habitatBL216.tif")
+
+impro216<- Improvement_func(before,after,site)
+
+# 218 ---------------------------------------------------------------------
+site<-218
+before<- raster("spatialdata/habitat218.tif")
+after<- raster("spatialdata/habitatBL218.tif")
+
+impro218<- Improvement_func(before,after,site)
+
+
+# 220 ---------------------------------------------------------------------
+site<-220
+before<- raster("spatialdata/habitat220.tif")
+after<- raster("spatialdata/habitatBL220.tif")
+
+impro220<- Improvement_func(before,after,site)
+
+
+# 221 ---------------------------------------------------------------------
+site<-221
+before<- raster("spatialdata/habitat221.tif")
+after<- raster("spatialdata/habitatBL221.tif")
+
+impro221<- Improvement_func(before,after,site)
+
+
+# 231 ---------------------------------------------------------------------
+site<-231
 before<- raster("spatialdata/habitat231.tif")
 after<- raster("spatialdata/habitatBL231.tif")
 
+impro231<- Improvement_func(before,after,site)
 
-qbef<-cellStats(before, stat='sum', na.rm=TRUE)
-qaft<-cellStats(after, stat='sum', na.rm=TRUE)
 
-prop_impro<- (qaft-qbef)/qbef
 
-bef1<- raster::reclassify(before, c(0.1, 1, 1))
-befcount<-cellStats(bef1, 'sum')
-
-aft1<- raster::reclassify(after, c(0.1, 1, 1))
-aftcount<-cellStats(aft1, 'sum')
-area_incr<-(aftcount-befcount)/befcount
-
-impro231<-as.data.frame(prop_impro)
-impro231$area_inc<-area_incr
-impro231$site<- 231
-colnames(impro231)<- c("qual_improve","area_incr","site")
+# Improvement all sites -------------------------------------------------------------
 
 improvement<-rbind(impro180,impro189,impro190,impro205,impro206, impro207,impro209,impro215, impro216,impro218,impro220,impro221,impro231)
 
 write.csv(improvement, "spatialdata/improvement.csv")
 
 
-# Plot improvement vs weighted change ----------------------------------------
+# Plot improvement vs weighted change EW ----------------------------------------
 
-impro_weight<-left_join(weighted_change, improvement, by='site')
+impro_weightEW<-left_join(weighted_changeEW, improvement, by='site')
 
-plot(impro_weight$qual_improve,impro_weight$sum_weight_change, xlab="proportinal increase in summed quality", ylab="proportional increase in \nsummed weighted connectivity")
-text(impro_weight$qual_improve,impro_weight$sum_weight_change, labels=impro_weight$site, cex=0.6, pos=4, col="blue")
+plot(impro_weightEW$qual_improve,impro_weightEW$sum_weight_change, xlab="proportinal increase in summed quality", ylab="proportional increase in \nsummed weighted connectivity")
+text(impro_weightEW$qual_improve,impro_weightEW$sum_weight_change, labels=impro_weightEW$site, cex=0.6, pos=4, col="blue")
 
-plot(impro_weight$qual_improve,log10(impro_weight$sum_weight_change), xlab="proportinal increase in summed quality", ylab="log10(proportional increase in \nsummed weighted connectivity)")
-text(impro_weight$qual_improve,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=4, col="blue")
+plot(impro_weightEW$qual_improve,log10(impro_weightEW$sum_weight_change), xlab="proportinal increase in summed quality", ylab="log10(proportional increase in \nsummed weighted connectivity)")
+text(impro_weightEW$qual_improve,log10(impro_weightEW$sum_weight_change), labels=impro_weightEW$site, cex=0.6, pos=4, col="blue")
 
-plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
-text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
+plot(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change))
+text(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change), labels=impro_weightEW$site, cex=0.6, pos=2, col="blue")
 
-plot(impro_weight$area_incr,log10(impro_weight$sum_weight_change))
-text(impro_weight$area_incr,log10(impro_weight$sum_weight_change), labels=impro_weight$site, cex=0.6, pos=2, col="blue")
+plot(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change))
+text(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change), labels=impro_weightEW$site, cex=0.6, pos=2, col="blue")
+
+
+# Plot improvement vs weighted change NS ----------------------------------------
+
+impro_weightNS<-left_join(weighted_changeNS, improvement, by='site')
+
+plot(impro_weightNS$qual_improve,impro_weightNS$sum_weight_change, xlab="proportinal increase in summed quality", ylab="proportional increase in \nsummed weighted connectivity")
+text(impro_weightNS$qual_improve,impro_weightNS$sum_weight_change, labels=impro_weightNS$site, cex=0.6, pos=4, col="blue")
+
+plot(impro_weightNS$qual_improve,log10(impro_weightNS$sum_weight_change), xlab="proportinal increase in summed quality", ylab="log10(proportional increase in \nsummed weighted connectivity)")
+text(impro_weightNS$qual_improve,log10(impro_weightNS$sum_weight_change), labels=impro_weightNS$site, cex=0.6, pos=4, col="blue")
+
+plot(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change))
+text(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change), labels=impro_weightNS$site, cex=0.6, pos=2, col="blue")
+
+plot(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change))
+text(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change), labels=impro_weightNS$site, cex=0.6, pos=2, col="blue")
+
 
