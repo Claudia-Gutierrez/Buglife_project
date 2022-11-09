@@ -19,7 +19,7 @@
 #INPUTS:
 # before - *.tif of habitat before intervention
 # after- *.tif of habitat before intervention
-# Area given in ha assuming a 10m^2 resolution, adjust accordingly
+# NOTE:Area given in ha assuming a 10m^2 resolution, adjust accordingly
 
 Improvement_func<-function(before, after, site){
   library(raster)
@@ -158,12 +158,14 @@ write.csv(improvement, "spatialdata/improvement.csv")
 
 impro_weightEW<-left_join(weighted_changeEW, improvement, by='site')
 
+#quality
 plot(impro_weightEW$qual_improve,impro_weightEW$sum_weight_change, xlab="proportinal increase in summed quality", ylab="proportional increase in \nsummed weighted connectivity")
 text(impro_weightEW$qual_improve,impro_weightEW$sum_weight_change, labels=impro_weightEW$site, cex=0.6, pos=4, col="blue")
 
 plot(impro_weightEW$qual_improve,log10(impro_weightEW$sum_weight_change), xlab="proportinal increase in summed quality", ylab="log10(proportional increase in \nsummed weighted connectivity)")
 text(impro_weightEW$qual_improve,log10(impro_weightEW$sum_weight_change), labels=impro_weightEW$site, cex=0.6, pos=4, col="blue")
 
+#area
 plot(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change))
 text(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change), labels=impro_weightEW$site, cex=0.6, pos=2, col="blue")
 
@@ -175,16 +177,52 @@ text(impro_weightEW$area_incr,log10(impro_weightEW$sum_weight_change), labels=im
 
 impro_weightNS<-left_join(weighted_changeNS, improvement, by='site')
 
-plot(impro_weightNS$qual_improve,impro_weightNS$sum_weight_change, xlab="proportinal increase in summed quality", ylab="proportional increase in \nsummed weighted connectivity")
-text(impro_weightNS$qual_improve,impro_weightNS$sum_weight_change, labels=impro_weightNS$site, cex=0.6, pos=4, col="blue")
+#quality
+ggplot(impro_weightNS, aes(qual_improve, sum_weight_change, size = area_after_ha))+
+  geom_point(color='cyan4')+
+  scale_size_area("Total \nhabitat area",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  geom_text(mapping = aes(label = site),hjust =-0.2,size=3)+
+  labs(x = 'Proportion of quality \nimprovement', y="Sum of wheighted \nchange in speed)")+
+  stat_smooth(method="lm",se=FALSE, color="#669999", show.legend = FALSE)+
+  theme(text = element_text(size = 11),
+        panel.border = element_rect(colour = "black", fill=NA),
+        panel.background = element_blank())
 
-plot(impro_weightNS$qual_improve,log10(impro_weightNS$sum_weight_change), xlab="proportinal increase in summed quality", ylab="log10(proportional increase in \nsummed weighted connectivity)")
-text(impro_weightNS$qual_improve,log10(impro_weightNS$sum_weight_change), labels=impro_weightNS$site, cex=0.6, pos=4, col="blue")
 
-plot(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change))
-text(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change), labels=impro_weightNS$site, cex=0.6, pos=2, col="blue")
+#quality vs log (weighted change)
 
-plot(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change))
-text(impro_weightNS$area_incr,log10(impro_weightNS$sum_weight_change), labels=impro_weightNS$site, cex=0.6, pos=2, col="blue")
+ggplot(impro_weightNS, aes(qual_improve, log10(sum_weight_change), size = area_after_ha))+
+  ggtitle("South to North movement") +
+  geom_point(color='cyan4')+
+  scale_size_area("Total \nhabitat area",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  geom_text(mapping = aes(label = site),hjust =-0.2,size=3)+
+  labs(x = 'Proportion of quality \nimprovement', y="log10(Sum of wheighted \nchange in speed)")+
+  stat_smooth(method="lm",se=FALSE, color="#669999", show.legend = FALSE)+
+  theme(text = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA),
+        panel.background = element_blank())
+
+corr <- cor.test(x=impro_weightNS$qual_improve, y=log10(impro_weightNS$sum_weight_change), method = 'pearson')
+corr
+#R=0.8732728 p=0.0004463 t=5.3769 95%ci= 0.5741896 0.9667247
+
+
+#area vs log (weighted change)
+ggplot(impro_weightNS, aes(area_incr, log10(sum_weight_change), size = area_after_ha))+
+  ggtitle("South to North movement") +
+  geom_point(color='cyan4')+
+  scale_size_area("Total \nhabitat area",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  geom_text(mapping = aes(label = site),hjust =-0.2,size=3)+
+  labs(x = 'Proportion of quality \nimprovement', y="log10(Sum of wheighted \nchange in speed)")+
+  stat_smooth(method="lm",se=FALSE, color="#669999", show.legend = FALSE)+
+  theme(text = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA),
+        panel.background = element_blank())
+
+corr1 <- cor.test(x=impro_weightNS$area_incr, y=log10(impro_weightNS$sum_weight_change), method = 'pearson')
+corr1
+#R=0.7514287  p=0.00767 t=3.4165 95%ci= 0.2759351 0.9314433
 
 

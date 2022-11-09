@@ -58,6 +58,8 @@ summary(bees$dist)
 
 allpoll<- rbind(moths, bees, hoverfly)
 
+write.csv(allpoll, "data/allpoll.csv")
+
 boxplot(logdist~Group, allpoll)
 
 ggplot(allpoll, aes(x=Group, y=logdist)) +

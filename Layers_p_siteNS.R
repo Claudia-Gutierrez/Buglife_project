@@ -143,12 +143,12 @@ st1[1,]<-2
 st1[st@nrows, ]<-1  
 
 st[]<-st1
+crs (st)<-"EPSG:27700"
 
 plot(st,col=c("magenta", "cyan3"), main= 'st180.tif')
 image(hab_bl, add = TRUE)
 st
 
-crs (st)<-"EPSG:27700"
 writeRaster(st,"spatialdata/st180.tif", overwrite=TRUE)
 
 
