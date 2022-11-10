@@ -155,8 +155,8 @@ site231ns<-weighted_change_func(conductance,site,direction)
 
 
 # weighted change NS ---------------------------------------------------------
-weighted_changeNS<-rbind(#site180ns,
-                         site189ns,
+weighted_changeNS<-rbind(site180ns,
+                         #site189ns,
                          site190ns,
                          site205ns,
                          site206ns,
@@ -177,12 +177,11 @@ write.csv(weighted_changeNS, "conductance/weighted_changeNS.csv")
 
 
 #Sites EW---------------------------------------------------------------------
-# 180 pending ---------------------------------------------------------------------
-
-
-
-
-
+# 180 ---------------------------------------------------------------------
+conductance<-as.data.frame(read.csv("conductanceEW/test180ew_diff.csv"))
+site<-180
+direction<-"ew"
+site180ew<-weighted_change_func(conductance,site,direction)
 
 # 189 not available---------------------------------------------------------------------
 # 190 ---------------------------------------------------------------------
@@ -253,7 +252,7 @@ site231ew<-weighted_change_func(conductance,site,direction)
 
 
 # weighted change EW ---------------------------------------------------------
-weighted_changeEW<-rbind(#site180ew,
+weighted_changeEW<-rbind(site180ew,
   #site189ew, not available
   site190ew,
   site205ew,
