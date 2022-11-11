@@ -18,7 +18,7 @@
 #INPUTS:
 # before - *.tif of habitat before intervention
 # after- *.tif of habitat before intervention
-# NOTE:Area given in ha assuming a 10m^2 resolution, adjust accordingly
+# NOTE:Area given in ha assuming a 10m resolution, adjust accordingly
 
 Improvement_func<-function(before, after, site){
   library(raster)
@@ -39,8 +39,8 @@ Improvement_func<-function(before, after, site){
   impro<-as.data.frame(prop_impro)
   impro$area_inc<-area_incr
   impro$site<- site
-    impro$areabef<-befcount/10000
-  impro$areaaft<-aftcount/10000
+    impro$areabef<-befcount*0.01
+  impro$areaaft<-aftcount*0.01
   colnames(impro)<- c("qual_improve","area_incr","site","area_before_ha","area_after_ha")
   return(impro)
 }

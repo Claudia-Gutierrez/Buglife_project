@@ -29,7 +29,7 @@ NSqplot<-ggplot(impro_weightNS, aes(qual_improve, sum_weight_change, size = area
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
   geom_point(alpha =0.7, colour='cyan4')+
-  scale_size_area("Total habitat \narea",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  scale_size("Total habitat \narea (ha)",labels = c("0-49", "50-99","100-149","150-199", "200-299",">300") , breaks = c(50,100,150,200, 250, 300), limits = c(0, 315))+
   geom_text(mapping = aes(label = site),hjust =-0.2,size=3.5)+
   labs(x = 'Proportion of quality improvement')+
   stat_smooth(method="lm",se=TRUE, color="#669999", show.legend = FALSE, alpha = 0.2)+
@@ -66,7 +66,7 @@ ggplot(impro_weightNS, aes(area_incr, sum_weight_change, size = area_after_ha))+
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
   geom_point(alpha =0.7, colour='cyan4')+
-  scale_size_area("Total habitat \narea",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  scale_size("Total habitat \narea (ha)",labels = c("0-49", "50-99","100-149","150-199", "200-299",">300") , breaks = c(50,100,150,200, 250, 300), limits = c(0, 315))+
   geom_text(mapping = aes(label = site),hjust =-0.2,size=3.5)+
   labs(x = 'Proportion of area increase')+
   stat_smooth(method="lm",se=TRUE, color="#669999", show.legend = FALSE, alpha = 0.2)+
@@ -107,7 +107,7 @@ EWqplot<-ggplot(impro_weightEW, aes(qual_improve, sum_weight_change, size = area
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
   geom_point(alpha =0.7, colour='cyan4')+
-  scale_size_area("Total habitat \narea",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  scale_size("Total habitat \narea (ha)",labels = c("0-49", "50-99","100-149","150-199", "200-299",">300") , breaks = c(50,100,150,200, 250, 300), limits = c(0, 315))+
   geom_text(mapping = aes(label = site),hjust =-0.2,size=3.5)+
   labs(x = 'Proportion of quality improvement')+
   stat_smooth(method="lm",se=TRUE, color="#669999", show.legend = FALSE, alpha = 0.2)+
@@ -146,7 +146,7 @@ ggplot(impro_weightEW, aes(area_incr, sum_weight_change, size = area_after_ha))+
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
   geom_point(alpha =0.7, colour='cyan4')+
-  scale_size_area("Total habitat \narea",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  scale_size("Total habitat \narea (ha)",labels = c("0-49", "50-99","100-149","150-199", "200-299",">300") , breaks = c(50,100,150,200, 250, 300), limits = c(0, 315))+
   geom_text(mapping = aes(label = site),hjust =-0.2,size=3.5)+
   labs(x = 'Proportion of area increase')+
   stat_smooth(method="lm",se=TRUE, color="#669999", show.legend = FALSE, alpha = 0.2)+
@@ -190,7 +190,7 @@ joint<-ggplot(joint_impro_weight,
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
   geom_point(alpha =0.7, colour='cyan4')+
-  scale_size_area("Total habitat \narea",labels = c("0.2", "0.8", "1.4", "2.0","2.6","3.2") , breaks = c(0.2, 0.8, 1.4, 2.0,2.6,3.2))+
+  scale_size("Total habitat \narea (ha)",labels = c("0-49", "50-99","100-149","150-199", "200-299",">300") , breaks = c(50,100,150,200, 250, 300), limits = c(0, 315))+
   geom_text(mapping = aes(label = site),hjust =-0.2,size=5)+
   labs(x = 'Proportion of quality improvement')+
   guides(size = "legend", colour = "none")+
@@ -204,4 +204,4 @@ joint<-ggplot(joint_impro_weight,
   labs(title= "Direction of Movement: {closest_state}")
 
 joint2<-animate(joint, height = 500, width =850)
-anim_save("figs/movement.gif", joint2)
+anim_save("figs/movement2.gif", joint2)
