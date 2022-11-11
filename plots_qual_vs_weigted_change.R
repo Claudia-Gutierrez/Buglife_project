@@ -24,7 +24,7 @@ impro_weightNS<-left_join(weighted_changeNS, improvement, by='site')
 #quality vs log (weighted change)
 
 NSqplot<-ggplot(impro_weightNS, aes(qual_improve, sum_weight_change, size = area_after_ha))+
-  ggtitle("South to North movement") +
+  ggtitle("Latitudinal movement") +
   scale_y_log10("Sum of wheighted \nchange in speed",
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
@@ -40,6 +40,10 @@ NSqplot<-ggplot(impro_weightNS, aes(qual_improve, sum_weight_change, size = area
         panel.border = element_rect(colour = "black", fill=NA),
         panel.background = element_blank())
 NSqplot
+
+ggsave("figs/Latqual.jpeg", NSqplot, width = 4250, height = 2500,
+  units = "px", dpi = 500)
+
 
 NSq<-lm(log10(impro_weightNS$sum_weight_change)~ impro_weightNS$qual_improve)
 summary(NSq)
@@ -61,7 +65,7 @@ summary(NSq)
 
 #area vs log (weighted change)
 ggplot(impro_weightNS, aes(area_incr, sum_weight_change, size = area_after_ha))+
-  ggtitle("South to North movement") +
+  ggtitle("Latitudinal movement") +
   scale_y_log10("Sum of wheighted \nchange in speed",
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
@@ -102,7 +106,7 @@ impro_weightEW<-left_join(weighted_changeEW, improvement, by='site')
 #quality vs log (weighted change)
 
 EWqplot<-ggplot(impro_weightEW, aes(qual_improve, sum_weight_change, size = area_after_ha))+
-  ggtitle("East to West movement") +
+  ggtitle("Longitudinal movement") +
   scale_y_log10("Sum of wheighted \nchange in speed",
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
@@ -119,6 +123,8 @@ EWqplot<-ggplot(impro_weightEW, aes(qual_improve, sum_weight_change, size = area
         panel.background = element_blank())
 EWqplot
 
+ggsave("figs/Longqual.jpeg", EWqplot, width = 4250, height = 2500,
+       units = "px", dpi = 500)
 
 EWq<-lm(log10(impro_weightEW$sum_weight_change)~ impro_weightEW$qual_improve)
 summary(EWq)
@@ -141,7 +147,7 @@ lm(formula = log10(impro_weightEW$sum_weight_change) ~ impro_weightEW$qual_impro
 
 #area vs log (weighted change)
 ggplot(impro_weightEW, aes(area_incr, sum_weight_change, size = area_after_ha))+
-  ggtitle("East to West movement") +
+  ggtitle("Longitudinal movement") +
   scale_y_log10("Sum of wheighted \nchange in speed",
                 breaks = trans_breaks("log10", function(x) 10^x),
                 labels = trans_format("log10", math_format(10^.x)))+
@@ -181,8 +187,8 @@ summary(EWa)
 
 joint_impro_weight<-rbind(impro_weightNS,impro_weightEW)
 
-joint_impro_weight$direction[joint_impro_weight$direction=="ns"]<- "South to North"
-joint_impro_weight$direction[joint_impro_weight$direction=="ew"]<- "East to West"
+joint_impro_weight$direction[joint_impro_weight$direction=="ns"]<- "Latitudinal"
+joint_impro_weight$direction[joint_impro_weight$direction=="ew"]<- "Longitudinal"
 
 joint<-ggplot(joint_impro_weight, 
               aes(qual_improve, sum_weight_change, size = area_after_ha))+
@@ -197,11 +203,13 @@ joint<-ggplot(joint_impro_weight,
   theme(text = element_text(size = 20, family="sans"),
         axis.text = element_text(size = 20),
         plot.title = element_text(hjust = 0.5),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=12),
         panel.border = element_rect(colour = "black", fill=NA),
         panel.background = element_blank())+
   transition_states(direction, state_length = 2,
                     transition_length = 0.5) +
-  labs(title= "Direction of Movement: {closest_state}")
+  labs(title= "Movement: {closest_state}")
 
 joint2<-animate(joint, height = 500, width =850)
 anim_save("figs/movement2.gif", joint2)

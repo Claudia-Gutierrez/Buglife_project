@@ -269,3 +269,24 @@ weighted_changeEW<-rbind(site180ew,
 write.csv(weighted_changeEW, "conductanceEW/weighted_changeEW.csv")
 
 
+
+# histogram of percentage of species --------------------------------------
+
+
+spp_dist<-ggplot(percentage) +
+  geom_bar(aes(disp_dist,percentage*100),stat="identity", fill='cyan4',alpha=0.5) +
+  scale_x_log10("Dispersal distance (km)",labels = scales::number_format(accuracy = 0.01))+
+  scale_y_continuous("% Species", breaks = c(seq(0, 8, 2)),
+    labels = scales::number_format(accuracy = 1))+
+  labs(title = 'Pollinators dispersal distance')+
+  theme(text = element_text(size = 13, family="sans"),
+        axis.text = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA),
+        panel.background = element_blank())
+spp_dist
+ggsave("figs/spp_dist.jpeg", spp_dist, width = 4250, height = 2500,
+       units = "px", dpi = 500)
+
+  
+         
