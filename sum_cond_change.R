@@ -129,8 +129,11 @@ site<-216
 direction<-"ns"
 site216ns<-weighted_change_func(conductance,site,direction)
 
-# 218 pending---------------------------------------------------------------------
-
+# 218 ---------------------------------------------------------------------
+conductance<-as.data.frame(read.csv("conductance/test218ns_diff.csv"))
+site<-218
+direction<-"ns"
+site218ns<-weighted_change_func(conductance,site,direction)
 
 # 220 ---------------------------------------------------------------------
 conductance<-as.data.frame(read.csv("conductance/test220ns_diff.csv"))
@@ -164,7 +167,7 @@ weighted_changeNS<-rbind(site180ns,
                          site209ns, 
                          site215ns,
                          site216ns, 
-                         #site218ns, 
+                         site218ns, 
                          site220ns, 
                          site221ns,
                          site231ns)
@@ -225,7 +228,7 @@ site<-216
 direction<-"ew"
 site216ew<-weighted_change_func(conductance,site,direction)
 
-# 218 pending ---------------------------------------------------------------------
+# 218 ---------------------------------------------------------------------
 conductance<-as.data.frame(read.csv("conductanceEW/test218ew_diff.csv"))
 site<-218
 direction<-"ew"
@@ -261,7 +264,7 @@ weighted_changeEW<-rbind(site180ew,
   site209ew, 
   site215ew,
   site216ew, 
-  #site218ew, 
+  site218ew, 
   site220ew, 
   site221ew,
   site231ew)

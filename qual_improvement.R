@@ -150,5 +150,23 @@ impro231<- Improvement_func(before,after,site)
 
 improvement<-rbind(impro180,impro189,impro190,impro205,impro206, impro207,impro209,impro215, impro216,impro218,impro220,impro221,impro231)
 
+improvement$sq_qual_improve<-((1+improvement$qual_improve)^2)-1
+
+improvement$site_letter[improvement$site== 180]<-"a"
+improvement$site_letter[improvement$site== 215]<-"b"
+improvement$site_letter[improvement$site== 216]<-"c"
+improvement$site_letter[improvement$site== 231]<-"d"
+improvement$site_letter[improvement$site== 218]<-"e"
+improvement$site_letter[improvement$site== 220]<-"f"
+improvement$site_letter[improvement$site== 221]<-"g"
+improvement$site_letter[improvement$site== 205]<-"h"
+improvement$site_letter[improvement$site== 206]<-"i"
+improvement$site_letter[improvement$site== 207]<-"j"
+improvement$site_letter[improvement$site== 209]<-"k"
+improvement$site_letter[improvement$site== 190]<-"l"
+
+joint_impro_weight$direction[joint_impro_weight$direction=="ns"]<- "Latitudinal"
+joint_impro_weight$direction[joint_impro_weight$direction=="ew"]<- "Longitudinal"
+
 write.csv(improvement, "spatialdata/improvement.csv")
 
