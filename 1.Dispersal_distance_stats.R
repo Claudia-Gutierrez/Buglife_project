@@ -37,6 +37,27 @@ hist(data_1$logdist)
 
 boxplot(logdist~Group, data_1)
 
+disp_dist_outliers<-ggplot(data, aes(x=reorder(Group,-dist), y=log10(dist), fill=Group)) +
+  geom_boxplot(width=0.3)+
+ # stat_boxplot(geom = "errorbar", width = 0.3) +
+  scale_fill_brewer(palette="Set3")+
+  # geom_hline(yintercept= -1.99,linetype = 2) +
+  # geom_hline(yintercept= 0.477,linetype = 2) +
+  theme_minimal()+
+  theme(legend.position="none", aspect.ratio = 1, text = element_text(size = 18))+
+  scale_y_continuous(breaks=c(-3,-2,-1,0,1,2), labels=c("0.001", "0.01", "0.1","1","10","100"))+
+  xlab("Group")+
+  ylab('Dispersal distance (km)')+
+  scale_x_discrete(label=c("Moths","Bees","Hoverflies"))+
+  coord_flip()+
+  theme(text = element_text(size = 12, family="sans"),
+        axis.text = element_text(size = 12))
+disp_dist_outliers
+
+ggsave("figs/disp_dist_outliers.jpeg", disp_dist_outliers, width = 4250, height = 2500,
+       units = "px", dpi = 500)  
+
+
 #Remove outliers
 
 moths<-subset(data_1, data_1$Group=="Moths")
@@ -62,15 +83,23 @@ write.csv(allpoll, "data/allpoll.csv")
 
 boxplot(logdist~Group, allpoll)
 
-ggplot(allpoll, aes(x=Group, y=logdist)) +
-  stat_boxplot(geom = "errorbar", width = 0.25) +
-  geom_boxplot(width=0.5)+
+library(RColorBrewer)
+disp_dist<-ggplot(allpoll, aes(x=Group, y=logdist, fill=Group)) +
+  stat_boxplot(geom = "errorbar", width = 0.3) +
+  geom_boxplot(width=0.3)+
+  coord_flip()+
+  scale_fill_brewer(palette="Set3")+
   theme_minimal()+
   theme(legend.position="none", aspect.ratio = 1, text = element_text(size = 18))+
   scale_y_continuous(breaks=c(-3,-2,-1,0,1,2), labels=c("0.001", "0.01", "0.1","1","10","100"))+
-  ylab('Log (Dispersal distance) [km]')+
-  scale_x_discrete(label=c("Bees", "Hoverflies","Moths"))
-  
+  ylab('Dispersal distance (km)')+
+  scale_x_discrete(label=c("Bees", "Hoverflies","Moths"))+
+  theme(text = element_text(size = 11, family="sans"),
+        axis.text = element_text(size = 12))
+disp_dist
+
+ggsave("figs/disp_dist.jpeg", disp_dist, width = 4250, height = 2500,
+       units = "px", dpi = 500)  
 
 
 

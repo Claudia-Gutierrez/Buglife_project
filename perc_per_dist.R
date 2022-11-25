@@ -33,6 +33,8 @@ breaks<-as.data.frame(breaks[-c(1), ])
 percentage<-cbind.data.frame(breaks,hist_info$density)
 colnames(percentage)<- c("disp_dist","percentage")
 
+perc<-sum(percentage$percentage)
+perc
 
 percentage$cumperc<-cumsum(percentage$percentage)
 percentage$inv_perc<-100-percentage$cumperc

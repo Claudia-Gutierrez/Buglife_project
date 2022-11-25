@@ -133,20 +133,23 @@ write.csv(perc_change,"conductance/test_3kchange.csv")
 # plot --------------------------------------------------------------------
 
 befaf<-ggplot(conductance.long, aes(disp_dist, speed, colour=Variable))+
-  geom_point(size = 3)+
+  geom_point(size = 3, alpha =0.7)+
   scale_x_log10("Dispersal distance (km)",
                 labels = scales::number_format(accuracy = 0.01))+
   scale_y_log10("Speed",
-                breaks = trans_breaks("log10", function(x) 10^x),
-                labels = trans_format("log10", math_format(10^.x)))+
+                breaks = trans_breaks("log10", function(x) 10^x))+
+                #labels = trans_format("log10", math_format(10^.x)))+
+  scale_color_manual(labels = c("After", "Before"), values = c("#009999", "#666666"))+
   theme(text = element_text(size = 11, family="sans"),
         axis.text = element_text(size = 12),
         plot.title = element_text(hjust = 0.5),
+        legend.position="top",
         legend.text = element_text(size=12),
-        legend.title = element_text(size=12),
+        legend.title = element_blank(),
         panel.border = element_rect(colour = "black", fill=NA),
         panel.background = element_blank())
+
 befaf
-ggsave("figs/befaf.jpeg", befaf, width = 4250, height = 2500,
+ggsave("figs/befaf.jpeg", befaf, width = 3250, height = 2500,
        units = "px", dpi = 500)
 
