@@ -147,12 +147,12 @@ joint_impro_weight$direction[joint_impro_weight$direction=="ew"]<- "Longitudinal
 
 joint<-ggplot(joint_impro_weight, 
               aes(log10(qual_improve), log10(sum_weight_change), size = area_after_ha))+
-  xlab("Proportion of area increase")+
+  xlab("Proportion of quality improvement")+
   scale_x_continuous(breaks=c(-3.0,-2,-1),labels = c("0.001","0.01","0.10"))+
   geom_line(aes(log10(area_incr), log10(sq_area_incr), linetype= "dashed",colour="red", size=0.2),show.legend=FALSE)+
   ylab("Sum of wheighted \npropotional change in speed")+
   scale_y_continuous(breaks = c(0,5,10,15), labels = c("1e0","1e5","1e10","1e15"))+
-  geom_line(aes(log10(area_incr), log10(sq_area_incr), linetype= "dashed",colour="red", size=0.2),show.legend=FALSE)+
+  geom_line(aes(log10(qual_improve), log10(sq_qual_improve), linetype= "dashed",colour="red", size=0.2),show.legend=FALSE)+
   geom_point(alpha =0.7, colour='cyan4')+
   scale_size("Total habitat \narea (ha)",labels = c("0-49", "50-99","100-149","150-199", "200-299",">300") , breaks = c(50,100,150,200, 250, 300), limits = c(0, 400))+
   geom_text(mapping = aes(label = site_letter),hjust =-0.2,size=12, check_overlap=TRUE)+
